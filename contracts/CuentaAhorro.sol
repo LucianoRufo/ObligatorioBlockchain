@@ -8,11 +8,16 @@ import "./ContratoConfiguracion.sol";
 contract CuentaAhorro is ContratoConfiguracion {
 
     struct Ahorrista {
-        uint name;
+        string ci;
+        string name;
+        string lastName;
+        uint256  addedDate;
         address  ahorristaAddress;
         address beneficiaryAddress;
         bool isGestor;
         bool isAuditor;
+        uint debt;
+        uint payed;
     }
 
     uint index = 0;
@@ -23,7 +28,14 @@ contract CuentaAhorro is ContratoConfiguracion {
 
     address public admin;
     address payable savingAccount;
-    
+    string public accountObjective;
+    uint actualSavings;
+    uint savingObjective;
+    uint cantAhorristas;
+    uint cantGestores;
+    uint cantAuditores;
+    bool accountEnabled;
+
     mapping(address => Ahorrista) ahorristaStructs; 
 
 
@@ -32,6 +44,11 @@ contract CuentaAhorro is ContratoConfiguracion {
     constructor(address payable _savingAccount) public payable {
         admin = msg.sender;
         savingAccount = _savingAccount;
+    }
+
+    modifier isEnabled() {
+        require(accountEnabled == true, "Only enabled account can receive deposit");
+        _;
     }
 
     modifier onlyAdmin() {
@@ -58,7 +75,7 @@ contract CuentaAhorro is ContratoConfiguracion {
 
     function addAhorrista(uint _name, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public {
     
-        ahorristas.push(_address );
+        ahorristas.push(_address);
 
         ahorristaStructs[_address] = Ahorrista(
             {
