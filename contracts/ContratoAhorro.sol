@@ -1,7 +1,7 @@
 //SPDX-License-Identifier:MIT;
 pragma solidity ^0.6.1;
 
-contract Practico1 {
+contract ContratoAhorro {
     address public owner;
 
     constructor() public payable {

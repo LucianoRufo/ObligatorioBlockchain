@@ -54,12 +54,12 @@ router.get("/getBalance", async function (req, res) {
   }
 });
 
-router.get("/getOwnerBalance", async function (req, res) {
+router.get("/getAdminBalance", async function (req, res) {
   try {
     const contract = contractService.getContract();
 
     let result = await contract.methods
-      .getOwnerBalance()
+      .getAdminBalance()
       .call()
       .then(function (result) {
         res
