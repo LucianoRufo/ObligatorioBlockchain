@@ -6,44 +6,14 @@ import "./ContratoConfiguracion.sol";
 
 
 contract CuentaAhorro is ContratoConfiguracion {
-
-    struct Ahorrista {
-        string ci;
-        string name;
-        string lastName;
-        uint256  addedDate;
-        address  ahorristaAddress;
-        address beneficiaryAddress;
-        bool isGestor;
-        bool isAuditor;
-        uint debt;
-        uint payed;
-    }
-
-    uint index = 0;
-
-    address[] ahorristas;
-    address[] gestores;
-    address[] auditores;
-
-    address public admin;
-    address payable savingAccount;
-    string public accountObjective;
-    uint actualSavings;
-    uint savingObjective;
-    uint cantAhorristas;
-    uint cantGestores;
-    uint cantAuditores;
-    bool accountEnabled;
-
-    mapping(address => Ahorrista) ahorristaStructs; 
-
+    
 
     function PublicFunction() public virtual override { publicVariable = 'PublicVariable in Cuenta ahorro'; }
     
-    constructor(address payable _savingAccount) public payable {
+    constructor(address payable _savingAccount, string memory _objective) public payable {
         admin = msg.sender;
         savingAccount = _savingAccount;
+        accountObjective = _objective;
     }
 
     modifier isEnabled() {
@@ -73,20 +43,25 @@ contract CuentaAhorro is ContratoConfiguracion {
         savingAccount.transfer(balance);
     }
 
-    function addAhorrista(uint _name, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public {
+    function addAhorrista(string memory _ci ,string memory _name,string memory _lastname, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public {
     
         ahorristas.push(_address);
 
         ahorristaStructs[_address] = Ahorrista(
             {
+                ci: _ci,
                 name: _name,
+                lastName: _lastname,
+                addedDate: now,
                 ahorristaAddress: _address,
                 beneficiaryAddress: _beneficiaryAddress,
                 isGestor: _isGestor,
-                isAuditor: _isAuditor
+                isAuditor: _isAuditor,
+                debt: 0,//TODO: Add variable minimum
+                payed: 0
             }
         );
-
+         
     }
 
 
