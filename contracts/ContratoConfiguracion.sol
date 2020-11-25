@@ -46,13 +46,15 @@ contract ContratoConfiguracion {
     uint public minimumDeposit;
     bool public isSavingVisible;
     bool public isVotingPeriod;
+    uint public bonusPercentage;
 
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
     mapping(address => bool) public closingVotesPerPeriodStruct; 
 
 
-    constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,uint  _minimumContribution, bool  _isSavingVisible ) public payable {
+    constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
+    uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage ) public payable {
         admin = msg.sender; //TODO: Admin no puede ser ni gestor ni auditor, agregar aquí a ahorristas.
         savingAccount = _savingAccount;
         accountObjectiveDescription = _objective;
@@ -62,6 +64,7 @@ contract ContratoConfiguracion {
         isSavingVisible = _isSavingVisible;
         isVotingPeriod = false;
         subObjectiveCounter = 0;
+        bonusPercentage = _bonusPercentage;
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
@@ -86,7 +89,10 @@ contract ContratoConfiguracion {
         require(ahorristaStructs[msg.sender].payed >= minimumContribution && ahorristaStructs[msg.sender].isApproved, "Only enabled account can receive deposits");
         _;
     }
-    
+    modifier notAuditNorAdmin() {
+        require( !ahorristaStructs[msg.sender].isAuditor && msg.sender != admin, "Only enabled account can receive deposits");
+        _;
+    }
 
     modifier isContractEnabled() {
         require(accountEnabled == true, "Only enabled account can receive deposits");
@@ -161,5 +167,33 @@ contract ContratoConfiguracion {
         //TODO
     }
 
-    
+    function askSavingPermission() public  notAuditNorAdmin  {
+        //TODO
+    }
+    function askForLoan() public  isSaverActive  {
+        //TODO
+    }
+
+    function retireFromFund() public  isSaverActive  {
+        //TODO
+    }
+    function reportSaverDeath(address _saver) public  onlyGestor  {
+        //TODO
+    }
+    function revokeDeath( ) public   {
+        //TODO
+    }
+    function closeDeadSaverAccount(address _saver) public  onlyGestor  {
+        //TODO
+    }
+
+    function makeContribution( ) public    {
+        //TODO
+    }
+    function payDebt( ) public    {
+        //TODO
+    }
+    function closeContract( ) public  onlyAdmin  {
+        //TODO
+    }
 }

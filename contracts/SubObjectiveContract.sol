@@ -18,15 +18,16 @@ contract SubObjectiveContract is ContratoConfiguracion {
     mapping(uint => SubObjective) public subObjectiveStructs; 
 
 
-    constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,uint  _minimumContribution, bool  _isSavingVisible )
-      ContratoConfiguracion(_savingAccount,_objective,_savingsObjective,_minimumDeposit,_minimumContribution,_isSavingVisible) public { }
+    constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
+    uint  _minimumContribution, bool  _isSavingVisible,uint _bonusPercentage )
+      ContratoConfiguracion(_savingAccount,_objective,_savingsObjective,_minimumDeposit,_minimumContribution,_isSavingVisible,_bonusPercentage) public { }
     
     
     modifier isSubObjectiveInProcess(uint id) {
         require(subObjectiveStructs[id].state == 0 , "Only in process subobjectives can be boted");
         _;
     }
-    
+
     function addSubObjective(string memory _description ,uint  _total) public onlyAdmin {
         address[] memory votersArray;
         subObjectives.push(subObjectiveCounter);
