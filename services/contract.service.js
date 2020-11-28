@@ -11,11 +11,11 @@ const methods = {
       "contracts",
       contractFileName
     );
+
     const sourceContent = {};
     sourceContent[contractFileName] = {
       content: fs.readFileSync(contractPath, "utf8"),
     };  
-
     const compilerInput = {
       language: "Solidity",
       sources: sourceContent,
@@ -25,9 +25,11 @@ const methods = {
     const compliedContract = JSON.parse(
       solc.compile(JSON.stringify(compilerInput), { import: getImports })
     );
+    console.log("antes");
 
     const contractName = contractFileName.replace(".sol", "");
     const contract = compliedContract.contracts[contractFileName][contractName];
+    console.log("pasó");
 
     const abi = contract.abi;
     const abiPath = path.resolve(
@@ -91,7 +93,7 @@ const methods = {
     const abiPath = path.resolve(
       process.cwd(),
       "build",
-      contractName + "_abi.json"
+      "CuentaAhorro" + "_abi.json"
     );
     const abi = JSON.parse(fs.readFileSync(abiPath, "utf8"));
 

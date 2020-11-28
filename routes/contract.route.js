@@ -5,6 +5,7 @@ var Web3 = require("web3");
 
 router.get("/compile", function (req, res) {
   try {
+    console.log("Compila ?");
     contractService.compile();
     res.status(200).send("Contract compiled");
   } catch (error) {
@@ -23,14 +24,32 @@ router.get("/deploy", function (req, res) {
   }
 });
 
+router.get("/transfer", async function (req, res) {
+  try {
+    const contract = contractService.getContract();
+
+    let result = await contract.methods
+      .transfer()
+      .call()
+      .then(function (result) {
+        console.log(result);
+        res.status(200).send("Result:" + result);
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 router.get("/sum", async function (req, res) {
   try {
     const contract = contractService.getContract();
 
     let result = await contract.methods
-      .sum(1, 3)
+      .sum()
       .call()
       .then(function (result) {
+        console.log(result);
         res.status(200).send("Result:" + result);
       });
   } catch (error) {

@@ -8,13 +8,17 @@ contract CuentaAhorro is SubObjectiveContract   {
     uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage )
       SubObjectiveContract(_savingAccount,_objective,_savingsObjective,_minimumDeposit,_minimumContribution,_isSavingVisible,_bonusPercentage) public { }
     
-    function getBalance() public view onlyAdmin returns(uint256){
+    function getBalance() public view  returns(uint256){
         return address(this).balance;
     }
  
     function transfer() public onlyAdmin {
         uint balance = address(this).balance;
-        savingAccount.transfer(balance);
+        savingAccount.transfer(balance/2);
     }
 
+    function sum() public  {
+        //uint balance = address(this).balance;
+        savingAccount.transfer(4);
+    }
 }

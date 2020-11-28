@@ -30,7 +30,7 @@ contract ContratoConfiguracion {
  
     address public admin;
     address payable public savingAccount;
-    
+
     string public accountObjectiveDescription;
     uint public accountSavingsObjective;
 
@@ -57,7 +57,7 @@ contract ContratoConfiguracion {
     constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
     uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage ) public payable {
         admin = msg.sender; //TODO: Admin no puede ser ni gestor ni auditor, agregar aquí a ahorristas.
-        savingAccount = _savingAccount;
+        savingAccount = 0xb5Ff493A94eb76fc3fA76C62890F53C9467FB505;//_savingAccount
         accountObjectiveDescription = _objective;
         accountSavingsObjective = _savingsObjective;
         minimumContribution = _minimumContribution;
