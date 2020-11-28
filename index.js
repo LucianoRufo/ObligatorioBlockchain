@@ -17,7 +17,7 @@ app.get("/", function (req, res) {
 
 //Con ganache
 const ganacheProvider = new Web3.providers.HttpProvider(
-  "http://127.0.0.1:7545"
+  "http://127.0.0.1:8545"
 );
 web3 = new Web3(ganacheProvider);
 
