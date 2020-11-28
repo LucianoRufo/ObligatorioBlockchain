@@ -30,6 +30,7 @@ contract ContratoConfiguracion {
  
     address public admin;
     address payable public savingAccount;
+    
     string public accountObjectiveDescription;
     uint public accountSavingsObjective;
 

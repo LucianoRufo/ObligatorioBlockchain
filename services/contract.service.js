@@ -111,6 +111,13 @@ function getImports(dependency) {
           "utf8"
         ),
       };
+    case "SubObjectiveContract.sol":
+      return {
+        contents: fs.readFileSync(
+          path.resolve(process.cwd(), "contracts", "SubObjectiveContract.sol"),
+          "utf8"
+        ),
+      };
     default:
       return { error: "Error on import" };
   }

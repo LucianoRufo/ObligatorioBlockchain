@@ -3,12 +3,12 @@ pragma solidity ^0.6.1;
 import "./ContratoConfiguracion.sol";
 
 contract SubObjectiveContract is ContratoConfiguracion {
-     struct SubObjective {
+    struct SubObjective {
         uint id;
         string description; 
         uint payed;
         uint totalToPay; 
-        uint state; // {0, 1 , 2} = { en proceso, Aprobado, Ejecutado}
+        uint state; // {0, 1 , 2} = { En proceso, Aprobado, Ejecutado}
         address[] voters; //También podía ser otro mapping
         uint nonPrelationOrders;
     }
@@ -24,7 +24,7 @@ contract SubObjectiveContract is ContratoConfiguracion {
     
     
     modifier isSubObjectiveInProcess(uint id) {
-        require(subObjectiveStructs[id].state == 0 , "Only in process subobjectives can be boted");
+        require(subObjectiveStructs[id].state == 0 , "Only in process subobjectives can be voted");
         _;
     }
 
@@ -57,9 +57,9 @@ contract SubObjectiveContract is ContratoConfiguracion {
 
     function addClosingVote() public onlyAudit {
         closingVotesPerPeriodStruct[msg.sender] = true;
-        uint arrayLength = gestores.length;
+        uint arrayLength = auditores.length;
         for (uint i=0; i< arrayLength; i++) {
-                if (closingVotesPerPeriodStruct[gestores[i]] == false){
+                if (closingVotesPerPeriodStruct[auditores[i]] == false){
                     return;
                 }
         }
@@ -96,9 +96,9 @@ contract SubObjectiveContract is ContratoConfiguracion {
         }
         votersPerPeriod = votersArray;
 
-        arrayLength = gestores.length;
+        arrayLength = auditores.length;
         for (uint i=0; i< arrayLength; i++) {
-                closingVotesPerPeriodStruct[gestores[i]] = false;
+                closingVotesPerPeriodStruct[auditores[i]] = false;
         }
     }
 
@@ -113,7 +113,7 @@ contract SubObjectiveContract is ContratoConfiguracion {
             SubObjective memory prioritizedSubObjective;
             for (uint i=0; i < subObjectivesLength; i++) {
                 SubObjective memory subObjective = subObjectiveStructs[subObjectives[i]];
-                if(subObjective.state == 0 && subObjective.voters.length > mostVotes && isNotInList(subObjective,cantExecuteSubObjectives) ){
+                if(subObjective.state == 1 && subObjective.voters.length > mostVotes && isNotInList(subObjective,cantExecuteSubObjectives) ){
                     mostVotes = subObjective.voters.length;
                     prioritizedSubObjective = subObjective;
                 }
