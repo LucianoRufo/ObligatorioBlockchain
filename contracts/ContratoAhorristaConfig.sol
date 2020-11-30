@@ -46,31 +46,18 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                 isGestor: _isGestor,
                 isAuditor: _isAuditor,
                 debt: 0, //TODO: Add variable minimum
-                payed: 0,
+                payed: 0, //TODO: El deposito minimo sumarlo aquí
                 isApproved: false
             }
         );
          
     }
 
-    function startGestorPostulation() public onlyAdmin {
-        //TODO
-    }
-    function startGestorVoting() public onlyAdmin {
-        //TODO
-    }
-    function finishGestorVoting() public onlyAdmin {
-        //TODO
-    }
-
-    function postulateFor(bool postulateGestor, bool postulateAuditor) public onlyAhorristaSimple isSaverActive  {
-        //TODO
-    }
 
     function askSavingPermission() public  notAuditNorAdmin  {
         //TODO 
     }
-    function askForLoan() public  isSaverActive  {
+    function askForLoan(uint amount) public  isSaverActive  {
         //TODO
     }
 
@@ -87,11 +74,16 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         //TODO
     }
 
-    function makeContribution( ) public    {
-        //TODO
+    function makeContribution( uint amount) public isContractEnabled   {
+        if( amount > minimumDeposit){
+            savingAccount.transfer(amount);
+            ahorristaStructs[msg.sender].payed+=amount;
+        }
+        //TODO Execute the contract if objective is reached
     }
     function payDebt( ) public    {
-        //TODO
+        uint amount = ahorristaStructs[msg.sender].debt;
+        savingAccount.transfer(amount);
     }
     function closeContract( ) public  onlyAdmin  {
         //TODO

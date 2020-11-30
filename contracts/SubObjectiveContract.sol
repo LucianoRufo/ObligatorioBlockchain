@@ -1,8 +1,8 @@
 //SPDX-License-Identifier:MIT;
 pragma solidity ^0.6.1;
-import "./ContratoAhorristaConfig.sol";
+import "./ContratoGestorVoting.sol";
 
-contract SubObjectiveContract is ContratoAhorristaConfig {
+contract SubObjectiveContract is ContratoGestorVoting {
     struct SubObjective {
         uint id; 
         string description;  
@@ -19,7 +19,7 @@ contract SubObjectiveContract is ContratoAhorristaConfig {
 
 
     constructor( )
-      ContratoAhorristaConfig() public { }  
+      ContratoGestorVoting() public { }  
     
     
     modifier isSubObjectiveInProcess(uint id) {

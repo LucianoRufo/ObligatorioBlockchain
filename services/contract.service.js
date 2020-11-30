@@ -127,6 +127,13 @@ function getImports(dependency) {
           "utf8"
         ),
       };
+    case "ContratoGestorVoting.sol":
+      return {
+        contents: fs.readFileSync(
+          path.resolve(process.cwd(), "contracts", "ContratoGestorVoting.sol"),
+          "utf8"
+        ),
+      };
     default:
       return { error: "Error on import" };
   }

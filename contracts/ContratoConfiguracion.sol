@@ -33,21 +33,23 @@ contract ContratoConfiguracion {
 
     string public accountObjectiveDescription;
     uint public accountSavingsObjective;
-
     uint public actualSavings;
-    uint public savingObjective;
+
+    bool public accountEnabled;
+
     uint public cantAhorristas;
     uint public maxAhorristas;
     uint public cantGestores;
     uint public maxGestores;
+    uint public cantAuditores;
     uint public maxAuditores;
     uint public subObjectiveCounter;
-    bool public accountEnabled;
     uint public minimumContribution;
     uint public minimumDeposit;
     bool public isSavingVisible;
     bool public isVotingPeriod;
     uint public bonusPercentage;
+
 
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
@@ -58,6 +60,7 @@ contract ContratoConfiguracion {
         admin = msg.sender; //TODO: Admin no puede ser ni gestor ni auditor, agregar aquí a ahorristas.
         isVotingPeriod = false;
         subObjectiveCounter = 0;
+        actualSavings = 0;
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
@@ -101,8 +104,9 @@ contract ContratoConfiguracion {
         require(!votedPerPeriodStruct[msg.sender] , "Only enabled account can receive deposits");
         _;
     }
+
     function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-    uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas ) public onlyAdmin {
+        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas ) public onlyAdmin {
         savingAccount = _savingAccount;//_savingAccount
         accountObjectiveDescription = _objective;
         accountSavingsObjective = _savingsObjective;
@@ -114,6 +118,9 @@ contract ContratoConfiguracion {
         maxGestores = maxAhorristas / 3;
         maxAuditores = maxGestores / 2;
     }
- 
+    function enableContract( ) public onlyAdmin {
+        //TODO: verificar condiciones -> si hay suficientes ahorristas, gestores y auditores.
+        accountEnabled = true;
+    }
     
 }
