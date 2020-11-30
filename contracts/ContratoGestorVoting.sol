@@ -7,17 +7,27 @@ import "./ContratoAhorristaConfig.sol";
 contract ContratoGestorVoting is ContratoAhorristaConfig {
 
 
+    address[] public gestorVotersPerPeriod;
+    bool public isGestorVotingPeriod;
+    bool public isGestorPostulationPeriod;
+
+    address[] public postulatedAhorrists;
+    mapping(address => Ahorrista) public postulatedAhorristsStructs; 
+
+
     constructor( )
       ContratoAhorristaConfig() public { } 
 
     function startGestorPostulation() public onlyAdmin {
-        //TODO
+        isGestorPostulationPeriod = true;
     }
     function startGestorVoting() public onlyAdmin {
-        //TODO
+        isGestorPostulationPeriod = false;
+        isGestorVotingPeriod = true;
     }
     function finishGestorVoting() public onlyAdmin {
-        //TODO
+        isGestorVotingPeriod = false;
+        //TODO: clean data
     }
 
     function postulateFor(bool postulateGestor, bool postulateAuditor) public onlyAhorristaSimple isSaverActive  {

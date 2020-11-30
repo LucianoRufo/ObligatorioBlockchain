@@ -8,13 +8,15 @@ contract ContratoConfiguracion {
         string name;
         string lastName;
         uint256  addedDate;
-        address  ahorristaAddress;
-        address beneficiaryAddress;
+        address payable  ahorristaAddress;
+        address payable beneficiaryAddress;
         bool isGestor;
         bool isAuditor;
         uint debt;
         uint payed;
+        uint toDepositOnApprove;
         bool isApproved;
+        bool isActivated;
     }
    
     //Indexed event to execute and search by indexes. TODO: Vincular mejor el objetivo .
@@ -28,7 +30,7 @@ contract ContratoConfiguracion {
     address[] public gestores;
     address[] public auditores;
  
-    address public admin;
+    address payable public admin;
     address payable public savingAccount;
 
     string public accountObjectiveDescription;
@@ -61,6 +63,9 @@ contract ContratoConfiguracion {
         isVotingPeriod = false;
         subObjectiveCounter = 0;
         actualSavings = 0;
+        maxAhorristas = 6;
+        maxGestores = maxAhorristas / 3;
+        maxAuditores = maxGestores / 2;
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
@@ -107,6 +112,7 @@ contract ContratoConfiguracion {
 
     function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
         uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas ) public onlyAdmin {
+        
         savingAccount = _savingAccount;//_savingAccount
         accountObjectiveDescription = _objective;
         accountSavingsObjective = _savingsObjective;
@@ -114,9 +120,11 @@ contract ContratoConfiguracion {
         minimumDeposit = _minimumDeposit;
         isSavingVisible = _isSavingVisible;
         bonusPercentage = _bonusPercentage;
-        maxAhorristas = _maxCantAhorristas;
-        maxGestores = maxAhorristas / 3;
-        maxAuditores = maxGestores / 2;
+        if(_maxCantAhorristas >= 6 ){
+            maxAhorristas = _maxCantAhorristas;
+            maxGestores = maxAhorristas / 3;
+            maxAuditores = maxGestores / 2;
+        }
     }
     function enableContract( ) public onlyAdmin {
         //TODO: verificar condiciones -> si hay suficientes ahorristas, gestores y auditores.

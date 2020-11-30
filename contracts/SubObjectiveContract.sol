@@ -6,6 +6,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
     struct SubObjective {
         uint id; 
         string description;  
+        address payable subObjectiveAddress;
         uint payed;
         uint totalToPay; 
         uint state; // {0, 1 , 2} = { En proceso, Aprobado, Ejecutado}
@@ -27,7 +28,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
         _;
     }
 
-    function addSubObjective(string memory _description ,uint  _total) public onlyAdmin {
+    function addSubObjective(string memory _description ,uint  _total, address payable _subObjectiveAddress) public onlyAdmin {
         address[] memory votersArray;
         subObjectives.push(subObjectiveCounter);
 
@@ -39,7 +40,8 @@ contract SubObjectiveContract is ContratoGestorVoting {
                 totalToPay: _total,
                 state: 0,
                 voters: votersArray,
-                nonPrelationOrders:0
+                nonPrelationOrders:0,
+                subObjectiveAddress: _subObjectiveAddress
             }
         );
         subObjectiveCounter++;
@@ -121,16 +123,20 @@ contract SubObjectiveContract is ContratoGestorVoting {
             //See if it can be executed
             if(actualSavings > prioritizedSubObjective.totalToPay){
                 if(isFirstInPriority){
-                    //TODO: Execute sub objective code for its address
                     actualSavings = actualSavings - prioritizedSubObjective.totalToPay;
+                    prioritizedSubObjective.state = 2;
+                    prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                     executedSubObj = true;
+                    //TODO: Generar evento
                 }
                 else {
                     prioritizedSubObjective.nonPrelationOrders++;
                     if(prioritizedSubObjective.nonPrelationOrders >= 2){
-                        //TODO: Execute sub objective code for its address
                         actualSavings = actualSavings - prioritizedSubObjective.totalToPay;
+                        prioritizedSubObjective.state = 2;
+                        prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                         executedSubObj = true;
+                        //TODO: Generar evento
                     }
                 }
                 
