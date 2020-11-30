@@ -1,42 +1,6 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "_savingAccount",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_objective",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_savingsObjective",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minimumDeposit",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_minimumContribution",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "_isSavingVisible",
-        "type": "bool"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_bonusPercentage",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -445,6 +409,54 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "_savingAccount",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "_objective",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_savingsObjective",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_minimumDeposit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_minimumContribution",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_isSavingVisible",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_bonusPercentage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxCantAhorristas",
+        "type": "uint256"
+      }
+    ],
+    "name": "configureContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

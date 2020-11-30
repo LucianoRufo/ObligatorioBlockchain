@@ -19,7 +19,7 @@ contract SubObjectiveContract is ContratoAhorristaConfig {
 
 
     constructor( )
-      ContratoAhorristaConfig() public { }
+      ContratoAhorristaConfig() public { }  
     
     
     modifier isSubObjectiveInProcess(uint id) {
