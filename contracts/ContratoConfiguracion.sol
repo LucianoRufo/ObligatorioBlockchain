@@ -54,18 +54,10 @@ contract ContratoConfiguracion {
     mapping(address => bool) public closingVotesPerPeriodStruct; 
 
 
-    constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-    uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage ) public payable {
+    constructor( ) public payable {
         admin = msg.sender; //TODO: Admin no puede ser ni gestor ni auditor, agregar aquí a ahorristas.
-        savingAccount = 0xb5Ff493A94eb76fc3fA76C62890F53C9467FB505;//_savingAccount
-        accountObjectiveDescription = _objective;
-        accountSavingsObjective = _savingsObjective;
-        minimumContribution = _minimumContribution;
-        minimumDeposit = _minimumDeposit;
-        isSavingVisible = _isSavingVisible;
         isVotingPeriod = false;
         subObjectiveCounter = 0;
-        bonusPercentage = _bonusPercentage;
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
@@ -109,92 +101,19 @@ contract ContratoConfiguracion {
         require(!votedPerPeriodStruct[msg.sender] , "Only enabled account can receive deposits");
         _;
     }
-
+    function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
+    uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas ) public onlyAdmin {
+        savingAccount = _savingAccount;//_savingAccount
+        accountObjectiveDescription = _objective;
+        accountSavingsObjective = _savingsObjective;
+        minimumContribution = _minimumContribution;
+        minimumDeposit = _minimumDeposit;
+        isSavingVisible = _isSavingVisible;
+        bonusPercentage = _bonusPercentage;
+        maxAhorristas = _maxCantAhorristas;
+        maxGestores = maxAhorristas / 3;
+        maxAuditores = maxGestores / 2;
+    }
  
-    function addAhorristaAdmin(string memory _ci ,string memory _name,string memory _lastname, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public onlyAdmin {
-        ahorristas.push(_address);
-
-        ahorristaStructs[_address] = Ahorrista(
-            {
-                ci: _ci,
-                name: _name,
-                lastName: _lastname,
-                addedDate: now,
-                ahorristaAddress: _address,
-                beneficiaryAddress: _beneficiaryAddress,
-                isGestor: _isGestor,
-                isAuditor: _isAuditor,
-                debt: 0, //TODO: Add variable minimum
-                payed: 0,
-                isApproved: true
-            }
-        );
-         
-    }
-
-    function addAhorristaByDeposit(string memory _ci ,string memory _name,string memory _lastname, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public  {
-        //TODO: Código para hacer la transferencia y depósito
-        ahorristas.push(_address);
-
-        ahorristaStructs[_address] = Ahorrista(
-            {
-                ci: _ci,
-                name: _name,
-                lastName: _lastname,
-                addedDate: now,
-                ahorristaAddress: _address,
-                beneficiaryAddress: _beneficiaryAddress,
-                isGestor: _isGestor,
-                isAuditor: _isAuditor,
-                debt: 0, //TODO: Add variable minimum
-                payed: 0,
-                isApproved: false
-            }
-        );
-         
-    }
-
-    function startGestorPostulation() public onlyAdmin {
-        //TODO
-    }
-    function startGestorVoting() public onlyAdmin {
-        //TODO
-    }
-    function finishGestorVoting() public onlyAdmin {
-        //TODO
-    }
-
-    function postulateFor(bool postulateGestor, bool postulateAuditor) public onlyAhorristaSimple isSaverActive  {
-        //TODO
-    }
-
-    function askSavingPermission() public  notAuditNorAdmin  {
-        //TODO
-    }
-    function askForLoan() public  isSaverActive  {
-        //TODO
-    }
-
-    function retireFromFund() public  isSaverActive  {
-        //TODO
-    }
-    function reportSaverDeath(address _saver) public  onlyGestor  {
-        //TODO
-    }
-    function revokeDeath( ) public   {
-        //TODO
-    }
-    function closeDeadSaverAccount(address _saver) public  onlyGestor  {
-        //TODO
-    }
-
-    function makeContribution( ) public    {
-        //TODO
-    }
-    function payDebt( ) public    {
-        //TODO
-    }
-    function closeContract( ) public  onlyAdmin  {
-        //TODO
-    }
+    
 }

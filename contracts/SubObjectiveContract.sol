@@ -1,11 +1,11 @@
 //SPDX-License-Identifier:MIT;
 pragma solidity ^0.6.1;
-import "./ContratoConfiguracion.sol";
+import "./ContratoAhorristaConfig.sol";
 
-contract SubObjectiveContract is ContratoConfiguracion {
+contract SubObjectiveContract is ContratoAhorristaConfig {
     struct SubObjective {
-        uint id;
-        string description; 
+        uint id; 
+        string description;  
         uint payed;
         uint totalToPay; 
         uint state; // {0, 1 , 2} = { En proceso, Aprobado, Ejecutado}
@@ -18,9 +18,8 @@ contract SubObjectiveContract is ContratoConfiguracion {
     mapping(uint => SubObjective) public subObjectiveStructs; 
 
 
-    constructor(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-    uint  _minimumContribution, bool  _isSavingVisible,uint _bonusPercentage )
-      ContratoConfiguracion(_savingAccount,_objective,_savingsObjective,_minimumDeposit,_minimumContribution,_isSavingVisible,_bonusPercentage) public { }
+    constructor( )
+      ContratoAhorristaConfig() public { }
     
     
     modifier isSubObjectiveInProcess(uint id) {

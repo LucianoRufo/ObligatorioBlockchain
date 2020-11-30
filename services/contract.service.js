@@ -120,6 +120,13 @@ function getImports(dependency) {
           "utf8"
         ),
       };
+    case "ContratoAhorristaConfig.sol":
+      return {
+        contents: fs.readFileSync(
+          path.resolve(process.cwd(), "contracts", "ContratoAhorristaConfig.sol"),
+          "utf8"
+        ),
+      };
     default:
       return { error: "Error on import" };
   }
