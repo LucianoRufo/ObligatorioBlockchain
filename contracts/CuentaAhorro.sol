@@ -7,8 +7,8 @@ contract CuentaAhorro is SubObjectiveContract   {
     constructor()
       SubObjectiveContract() public { }
     
-    function getBalance() public view  returns(uint256){
-        return address(this).balance;
+    function getBalance() public canSeeBalance view  returns(uint256){
+        return actualSavings;
     }
  
     function transfer() public onlyAdmin {

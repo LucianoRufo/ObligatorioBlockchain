@@ -17,6 +17,7 @@ contract ContratoConfiguracion {
         uint toDepositOnApprove;
         bool isApproved;
         bool isActivated;
+        bool canSeeBalance;
     }
    
     //Indexed event to execute and search by indexes. TODO: Vincular mejor el objetivo .
@@ -51,12 +52,14 @@ contract ContratoConfiguracion {
     bool public isSavingVisible;
     bool public isVotingPeriod;
     uint public bonusPercentage;
-    
     uint public activeSavers;
+    uint public maxLoan;
+    uint public recargoMoroso;
 
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
     mapping(address => bool) public closingVotesPerPeriodStruct; 
+    mapping(address => bool) public permissionRequestsToSolve; 
 
 
     constructor( ) public payable {
@@ -75,6 +78,11 @@ contract ContratoConfiguracion {
     }
     modifier onlyAudit() {
         require(ahorristaStructs[msg.sender].isAuditor, "Only the auditors can call this function.");
+        _;
+    }
+
+    modifier auditOrAdmin() {
+        require(ahorristaStructs[msg.sender].isAuditor || msg.sender == admin, "Only the auditor or admin can call this function.");
         _;
     }
 
@@ -112,8 +120,13 @@ contract ContratoConfiguracion {
         _;
     }
 
+    modifier canSeeBalance() {
+        require(msg.sender == admin || ahorristaStructs[msg.sender].isAuditor || ahorristaStructs[msg.sender].canSeeBalance, "Only enabled account can see the balance");
+        _;
+    }
+
     function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas ) public onlyAdmin {
+        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso ) public onlyAdmin {
         
         savingAccount = _savingAccount;//_savingAccount
         accountObjectiveDescription = _objective;
@@ -127,10 +140,12 @@ contract ContratoConfiguracion {
             maxGestores = maxAhorristas / 3;
             maxAuditores = maxGestores / 2;
         }
+        maxLoan = _maxLoan;
+        recargoMoroso = _recargoMoroso;
     }
+
     function enableContract( ) public onlyAdmin {
         //TODO: verificar condiciones -> si hay suficientes ahorristas, gestores y auditores.
         accountEnabled = true;
     }
-    
 }

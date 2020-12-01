@@ -6,6 +6,13 @@ import "./ContratoConfiguracion.sol";
 
 contract ContratoAhorristaConfig is ContratoConfiguracion {
 
+   struct Loan {
+        address saver;
+        uint debt;
+        uint payments;
+        uint actualDebt;
+    }
+    mapping(address => Loan) public loans; 
 
     constructor( )
       ContratoConfiguracion() public { }
@@ -27,7 +34,8 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                 payed: 0, //TODO: El deposito minimo sumarlo aquí
                 toDepositOnApprove: 0, 
                 isApproved: false,
-                isActivated: false
+                isActivated: false,
+                canSeeBalance: false
             }
         );
          
@@ -52,7 +60,8 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                     payed: 0,
                     toDepositOnApprove: deposit, //TODO: El deposito minimo sumarlo aquí
                     isApproved: false,
-                    isActivated: false
+                    isActivated: false,
+                    canSeeBalance: false
                 }
             );
         }
@@ -74,11 +83,32 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     }
 
-    function askSavingPermission() public  notAuditNorAdmin  {
-        //TODO 
+    function askBalancePermission() public  notAuditNorAdmin  {
+        permissionRequestsToSolve[msg.sender] = true;
     }
+
+    function giveBalancePermission(address saverToApprove) public  auditOrAdmin  {
+        if(permissionRequestsToSolve[saverToApprove] ){
+            permissionRequestsToSolve[saverToApprove] = false;
+            ahorristaStructs[saverToApprove].canSeeBalance = true;
+        }
+    }
+
+    function removeBalancePermission(address saverToApprove) public  auditOrAdmin  {
+        ahorristaStructs[saverToApprove].canSeeBalance = true;
+    }
+
     function askForLoan(uint amount) public  isSaverActive  {
-        //TODO
+        //TODO: Transfer logic
+        loans[msg.sender] = Loan(
+            {
+                saver: msg.sender,
+                debt: amount,
+                payments: 0,
+                actualDebt: amount
+            }
+        );
+
     }
 
     function retireFromFund() public  isSaverActive  {
@@ -93,7 +123,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     function closeDeadSaverAccount(address _saver) public  onlyGestor  {
         //TODO
     }
-
+ 
     function makeContribution( uint amount) public isContractEnabled   {
         if( amount > minimumDeposit){
             savingAccount.transfer(amount);
