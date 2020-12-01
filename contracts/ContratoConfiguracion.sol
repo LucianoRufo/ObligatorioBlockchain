@@ -18,6 +18,8 @@ contract ContratoConfiguracion {
         bool isApproved;
         bool isActivated;
         bool canSeeBalance;
+        uint256 lastPaymentDate;
+        bool isRetired;
     }
    
     //Indexed event to execute and search by indexes. TODO: Vincular mejor el objetivo .
@@ -55,6 +57,7 @@ contract ContratoConfiguracion {
     uint public activeSavers;
     uint public maxLoan;
     uint public recargoMoroso;
+    uint public percentageForRetirements;
 
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
@@ -125,8 +128,13 @@ contract ContratoConfiguracion {
         _;
     }
 
+    modifier hasNoDebts() {
+        require(ahorristaStructs[msg.sender].debt > 0, "Only enabled account can see the balance");
+        _;
+    }
+
     function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso ) public onlyAdmin {
+        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso, uint _percentageForRetirements ) public onlyAdmin {
         
         savingAccount = _savingAccount;//_savingAccount
         accountObjectiveDescription = _objective;
@@ -142,6 +150,7 @@ contract ContratoConfiguracion {
         }
         maxLoan = _maxLoan;
         recargoMoroso = _recargoMoroso;
+        percentageForRetirements = _percentageForRetirements;
     }
 
     function enableContract( ) public onlyAdmin {

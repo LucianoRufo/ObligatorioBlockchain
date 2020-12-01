@@ -35,7 +35,9 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                 toDepositOnApprove: 0, 
                 isApproved: false,
                 isActivated: false,
-                canSeeBalance: false
+                canSeeBalance: false,
+                lastPaymentDate: now,
+                isRetired: false
             }
         );
          
@@ -61,7 +63,9 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                     toDepositOnApprove: deposit, //TODO: El deposito minimo sumarlo aquí
                     isApproved: false,
                     isActivated: false,
-                    canSeeBalance: false
+                    canSeeBalance: false,
+                    lastPaymentDate: now,
+                    isRetired: false
                 }
             );
         }
@@ -99,46 +103,81 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     }
 
     function askForLoan(uint amount) public  isSaverActive  {
-        //TODO: Transfer logic
-        loans[msg.sender] = Loan(
-            {
-                saver: msg.sender,
-                debt: amount,
-                payments: 0,
-                actualDebt: amount
+        //TODO: Transfer logic & emit event
+        if( amount <= maxLoan){
+            loans[msg.sender] = Loan(
+                {
+                    saver: msg.sender,
+                    debt: amount,
+                    payments: 0,
+                    actualDebt: amount 
+                }
+            );
+            ahorristaStructs[msg.sender].debt = amount;
+            ahorristaStructs[msg.sender].isActivated = false;
+        }
+    }
+
+    function retireFromFund(bool retireWithoutWithdrawal) public  isSaverActive hasNoDebts  {
+        //TODO: Chequear si el retirado es admin / gestor / auditor -> abrir inscripciones y disparar votación de alguna forma.
+        if(retireWithoutWithdrawal){
+            ahorristaStructs[msg.sender].isRetired = true;
+        } else {
+            uint amountToReturn = ahorristaStructs[msg.sender].payed / 100 * percentageForRetirements;
+            if(actualSavings >= amountToReturn){
+                ahorristaStructs[msg.sender].isRetired = true;
+                actualSavings-=amountToReturn;
+                //TODO: Code to transfer from the savings to the address.
             }
-        );
-
+        }
     }
-
-    function retireFromFund() public  isSaverActive  {
-        //TODO
-    }
+    
     function reportSaverDeath(address _saver) public  onlyGestor  {
         //TODO
     }
+
     function revokeDeath( ) public   {
         //TODO
     }
+
     function closeDeadSaverAccount(address _saver) public  onlyGestor  {
         //TODO
     }
  
-    function makeContribution( uint amount) public isContractEnabled   {
-        if( amount > minimumDeposit){
-            savingAccount.transfer(amount);
-            ahorristaStructs[msg.sender].payed+=amount;
-            if (ahorristaStructs[msg.sender].payed > minimumContribution){
-                ahorristaStructs[msg.sender].isActivated = true;
-                activeSavers++;
+    function makeContribution( uint amount, bool payRecharge) public isContractEnabled   {
+        if( amount > minimumDeposit ){
+            if(now - ahorristaStructs[msg.sender].lastPaymentDate < 1000 * 60 * 60 * 24 * 60 ){
+                if(payRecharge){
+                    amount+= recargoMoroso;
+                    savingAccount.transfer(amount);
+                    ahorristaStructs[msg.sender].payed+=amount;
+                    if (ahorristaStructs[msg.sender].payed > minimumContribution){
+                        ahorristaStructs[msg.sender].isActivated = true;
+                        ahorristaStructs[msg.sender].lastPaymentDate = now; 
+                        activeSavers++;
+                    }
+                }
+            }else {
+                savingAccount.transfer(amount);
+                ahorristaStructs[msg.sender].payed+=amount;
+                if (ahorristaStructs[msg.sender].payed > minimumContribution){
+                    ahorristaStructs[msg.sender].isActivated = true;
+                    ahorristaStructs[msg.sender].lastPaymentDate = now; 
+                    activeSavers++;
+                }
             }
         }
         //TODO Execute the contract if objective is reached
     }
-    function payDebt( ) public    {
-        uint amount = ahorristaStructs[msg.sender].debt;
+
+    function payDebt(uint amount ) public    {
+        ahorristaStructs[msg.sender].debt = ahorristaStructs[msg.sender].debt - amount;
+        ahorristaStructs[msg.sender].lastPaymentDate = now;
+        loans[msg.sender].payments+= amount;
+        loans[msg.sender].actualDebt-= amount;
         savingAccount.transfer(amount);
     }
+
     function closeContract( ) public  onlyAdmin  {
         //TODO
     }
