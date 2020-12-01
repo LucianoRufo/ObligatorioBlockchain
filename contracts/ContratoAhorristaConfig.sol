@@ -10,7 +10,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     constructor( )
       ContratoConfiguracion() public { }
  
-    function addAhorristaAdmin(string memory _ci ,string memory _name,string memory _lastname, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public onlyAdmin {
+    function addAhorristaAdmin(string memory _ci ,string memory _name,string memory _lastname, address payable _address,address payable _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public onlyAdmin {
         ahorristas.push(_address);
 
         ahorristaStructs[_address] = Ahorrista(
@@ -33,7 +33,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
          
     }
 
-    function addAhorristaByDeposit(string memory _ci ,string memory _name,string memory _lastname, address _address,address _beneficiaryAddress,  bool _isGestor, bool _isAuditor, uint deposit) public  {
+    function addAhorristaByDeposit(string memory _ci ,string memory _name,string memory _lastname, address payable _address,address payable _beneficiaryAddress,  bool _isGestor, bool _isAuditor, uint deposit) public  {
         //TODO: Código para hacer la transferencia y depósito
         if(deposit >= minimumDeposit){
             ahorristas.push(_address);
@@ -65,6 +65,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         ahorristaStructs[saverToApproveAddress].isApproved = true;
         if(ahorristaStructs[saverToApproveAddress].toDepositOnApprove >= minimumContribution){
             ahorristaStructs[saverToApproveAddress].isActivated = true;
+            activeSavers++;
         }
         saverToApproveAddress.transfer(ahorristaStructs[saverToApproveAddress].toDepositOnApprove);
         //TODO: Check si esto funciona y transfiere al contrato, o hay que hacer variable balance etc.
@@ -99,6 +100,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             ahorristaStructs[msg.sender].payed+=amount;
             if (ahorristaStructs[msg.sender].payed > minimumContribution){
                 ahorristaStructs[msg.sender].isActivated = true;
+                activeSavers++;
             }
         }
         //TODO Execute the contract if objective is reached

@@ -51,7 +51,8 @@ contract ContratoConfiguracion {
     bool public isSavingVisible;
     bool public isVotingPeriod;
     uint public bonusPercentage;
-
+    
+    uint public activeSavers;
 
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
@@ -66,6 +67,7 @@ contract ContratoConfiguracion {
         maxAhorristas = 6;
         maxGestores = maxAhorristas / 3;
         maxAuditores = maxGestores / 2;
+        activeSavers = 0;
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
