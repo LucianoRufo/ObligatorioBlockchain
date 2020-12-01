@@ -58,6 +58,7 @@ contract ContratoConfiguracion {
     uint public maxLoan;
     uint public recargoMoroso;
     uint public percentageForRetirements;
+    uint256 public timeToReportLife;
 
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
@@ -134,7 +135,8 @@ contract ContratoConfiguracion {
     }
 
     function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso, uint _percentageForRetirements ) public onlyAdmin {
+        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso, 
+        uint _percentageForRetirements, uint _timeToReportLife ) public onlyAdmin {
         
         savingAccount = _savingAccount;//_savingAccount
         accountObjectiveDescription = _objective;
@@ -151,6 +153,7 @@ contract ContratoConfiguracion {
         maxLoan = _maxLoan;
         recargoMoroso = _recargoMoroso;
         percentageForRetirements = _percentageForRetirements;
+        timeToReportLife = _timeToReportLife;
     }
 
     function enableContract( ) public onlyAdmin {

@@ -12,7 +12,24 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         uint payments;
         uint actualDebt;
     }
+    struct DeathReport {
+        address saver;
+        uint gestorApprovals;
+        bool exist;
+        uint256 dateApproved;
+    }
     mapping(address => Loan) public loans; 
+    mapping(address => DeathReport) public deathReports; 
+
+    modifier saverIsOnTime() {  
+        require(now - deathReports[msg.sender].dateApproved < timeToReportLife, "The time to report life was ended.");
+        _;
+    }
+
+    modifier saverWasReportedAndOutOfTime() {  
+        require(deathReports[msg.sender].exist && now - deathReports[msg.sender].dateApproved >= timeToReportLife, "This user can't be deleted");
+        _;
+    }
 
     constructor( )
       ContratoConfiguracion() public { }
@@ -132,16 +149,38 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         }
     }
     
-    function reportSaverDeath(address _saver) public  onlyGestor  {
+    function reportSaverDeath(address saver) public  onlyGestor  {
         //TODO
+        if(deathReports[saver].exist){
+            deathReports[saver].gestorApprovals++;
+            if(deathReports[saver].gestorApprovals >= 2){
+                deathReports[saver].dateApproved = now;
+            }
+        } else {
+            deathReports[saver] = DeathReport({
+                saver: saver,
+                gestorApprovals: 0,
+                exist: true,
+                dateApproved: now
+            });
+        }
     }
 
-    function revokeDeath( ) public   {
-        //TODO
+    function revokeDeath( ) public saverIsOnTime   {
+        deathReports[msg.sender].gestorApprovals = 0;
+        deathReports[msg.sender].exist = false;
     }
 
-    function closeDeadSaverAccount(address _saver) public  onlyGestor  {
-        //TODO
+    function closeDeadSaverAccount(address _saver) public  onlyGestor saverWasReportedAndOutOfTime  {
+        //TODO: Chequear si el retirado es admin / gestor / auditor -> abrir inscripciones y disparar votación de alguna forma.
+        uint amountToReturn = ahorristaStructs[_saver].payed / 100 * percentageForRetirements -  ahorristaStructs[_saver].debt;
+        if(actualSavings >= amountToReturn &&  amountToReturn > 0){
+            ahorristaStructs[_saver].isRetired = true;
+            ahorristaStructs[_saver].isActivated = false;
+            ahorristaStructs[_saver].isApproved = false;
+            actualSavings-=amountToReturn;
+            //TODO: Code to transfer from the savings to the beneficiary address.
+        }
     }
  
     function makeContribution( uint amount, bool payRecharge) public isContractEnabled   {
