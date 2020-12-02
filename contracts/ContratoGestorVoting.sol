@@ -158,7 +158,7 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
             else {
                 if(!votedLogs[msg.sender].votedAudit){
                     votedLogs[msg.sender].votedAudit = true;
-                    postulatedSaversStructs[gestorToVote].votesForAudit++;
+                    postulatedSaversStructs[auditToVote].votesForAudit++;
                 }
             }
         }
