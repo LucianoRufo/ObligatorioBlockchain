@@ -82,14 +82,14 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
         //Si el más votado es el mismo, se queda con el cargo para el que más apoyo tubo TODO: Controlar que los numeros de ahorristas gestores y auditores esten en los numeros correctos.
         if(mostVotedGestor.postulatorAddress == mostVotedAudit.postulatorAddress){
             if(mostVotedGestor.votesForAudit > mostVotedGestor.votesForGestor){
-                ahorristaStructs[mostVotedAudit.postulatorAddress].isAudit = true;
+                ahorristaStructs[mostVotedAudit.postulatorAddress].isAuditor = true;
                 ahorristaStructs[secondMostVotedGestor.postulatorAddress].isGestor = true;
             }else{
                 ahorristaStructs[mostVotedGestor.postulatorAddress].isGestor = true;
-                ahorristaStructs[secondMostVotedAudit.postulatorAddress].isAudit = true;
+                ahorristaStructs[secondMostVotedAudit.postulatorAddress].isAuditor = true;
             }
         } else {
-                ahorristaStructs[mostVotedAudit.postulatorAddress].isAudit = true;
+                ahorristaStructs[mostVotedAudit.postulatorAddress].isAuditor = true;
                 ahorristaStructs[mostVotedGestor.postulatorAddress].isGestor = true;
         }
         //Borro los datos del período de la votación.
@@ -124,7 +124,7 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
         if(postulatedSaversStructs[gestorToVote].runsForGestor){
             if(!votedLogs[msg.sender].exists){
                 gestorVotersPerPeriod.push(msg.sender);
-                votedLogs[msg.sender] = Postulation(
+                votedLogs[msg.sender] = VoteLog(
                     {
                         votedGestor: true,
                         votedAudit: false,
@@ -146,7 +146,7 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
             
             if(!votedLogs[msg.sender].exists){
                 gestorVotersPerPeriod.push(msg.sender);
-                votedLogs[msg.sender] = Postulation(
+                votedLogs[msg.sender] = VoteLog(
                     {
                         votedGestor: false,
                         votedAudit: true,
