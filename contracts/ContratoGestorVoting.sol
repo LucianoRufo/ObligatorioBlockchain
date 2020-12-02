@@ -59,10 +59,10 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
         //Getting most voted contenders.
         uint mostVotesForAudit = 0;
         uint mostVotesForGestor = 0;
-        Postulation mostVotedGestor;
-        Postulation secondMostVotedGestor;
-        Postulation mostVotedAudit;
-        Postulation secondMostVotedAudit;
+        Postulation memory mostVotedGestor;
+        Postulation memory secondMostVotedGestor;
+        Postulation memory mostVotedAudit;
+        Postulation memory secondMostVotedAudit;
 
         for (uint i=0; i< postulatedSaversArray.length; i++) {
             if (postulatedSaversStructs[postulatedSaversArray[i]].runsForGestor && 
