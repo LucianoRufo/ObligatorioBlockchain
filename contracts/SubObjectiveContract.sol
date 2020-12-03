@@ -1,29 +1,10 @@
 //SPDX-License-Identifier:MIT;
 pragma solidity ^0.6.1;
+pragma experimental ABIEncoderV2;
 import "./ContratoGestorVoting.sol";
   
 contract SubObjectiveContract is ContratoGestorVoting {
-    struct SubObjective {
-        uint id; 
-        string description;   
-        address payable subObjectiveAddress;
-        uint payed;
-        uint totalToPay; 
-        uint state; // {0, 1 , 2} = { En proceso, Aprobado, Ejecutado}
-        address[] voters; //También podía ser otro mapping
-        uint nonPrelationOrders;
-    }
-
-    event SubObjectiveCompleted(address indexed _subObjectiveAddress, string _description, uint _amount, address indexed _gestorAddress);
-
-
-    address[] public votersPerPeriod;
-    uint[] public subObjectives;
-    uint approvedObjectives;
-
-    mapping(uint => SubObjective) public subObjectiveStructs; 
-
-
+   
     constructor( )
       ContratoGestorVoting() public {
           approvedObjectives = 0;
@@ -31,7 +12,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
     
     
     modifier isSubObjectiveInProcess(uint id) {
-        require(subObjectiveStructs[id].state == 0 , "Only in process subobjectives can be voted");
+        require(mappings.subObjectiveStructs[id].state == 0 , "Only in process subobjectives can be voted");
         _;
     }
 
@@ -49,7 +30,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
         address[] memory votersArray;
         subObjectives.push(config.subObjectiveCounter);
 
-        subObjectiveStructs[config.subObjectiveCounter] = SubObjective(
+        mappings.subObjectiveStructs[config.subObjectiveCounter] = SubObjective(
             {
                 id:config.subObjectiveCounter,
                 description: _description,
@@ -69,15 +50,15 @@ contract SubObjectiveContract is ContratoGestorVoting {
     }
 
     function voteSubObjective(uint subObjectiveId) public onVotingPeriod isSaverActive hasNotVoted isSubObjectiveInProcess(subObjectiveId) {
-        votedPerPeriodStruct[msg.sender] = true;
-        subObjectiveStructs[subObjectiveId].voters.push(msg.sender);
+        mappings.votedPerPeriodStruct[msg.sender] = true;
+        mappings.subObjectiveStructs[subObjectiveId].voters.push(msg.sender);
     }
 
     function addClosingVote() public onlyAudit {
-        closingVotesPerPeriodStruct[msg.sender] = true;
+        mappings.closingVotesPerPeriodStruct[msg.sender] = true;
         uint arrayLength = auditores.length;
         for (uint i=0; i< arrayLength; i++) {
-                if (closingVotesPerPeriodStruct[auditores[i]] == false){
+                if (mappings.closingVotesPerPeriodStruct[auditores[i]] == false){
                     return;
                 }
         }
@@ -89,13 +70,13 @@ contract SubObjectiveContract is ContratoGestorVoting {
         uint subObjectivesLength = subObjectives.length;
         uint mostVotes = 0;
         for (uint i=0; i< subObjectivesLength; i++) {
-            SubObjective memory subObjective = subObjectiveStructs[subObjectives[i]];
+            SubObjective memory subObjective = mappings.subObjectiveStructs[subObjectives[i]];
             if(subObjective.state == 0 && subObjective.voters.length > mostVotes ){
                 mostVotes = subObjective.voters.length;
             }
         }
         for (uint i=0; i< subObjectivesLength; i++) {
-            SubObjective memory subObjective = subObjectiveStructs[subObjectives[i]];
+            SubObjective memory subObjective = mappings.subObjectiveStructs[subObjectives[i]];
             if( subObjective.voters.length == mostVotes ){
                 subObjective.state = 1;
                 approvedObjectives++;
@@ -111,13 +92,13 @@ contract SubObjectiveContract is ContratoGestorVoting {
         config.isVotingPeriod = false;
         uint arrayLength = votersPerPeriod.length;
         for (uint i=0; i< arrayLength; i++) {
-            votedPerPeriodStruct[votersPerPeriod[i]] = false;
+            mappings.votedPerPeriodStruct[votersPerPeriod[i]] = false;
         }
         votersPerPeriod = votersArray;
 
         arrayLength = auditores.length;
         for (uint i=0; i< arrayLength; i++) {
-                closingVotesPerPeriodStruct[auditores[i]] = false;
+                mappings.closingVotesPerPeriodStruct[auditores[i]] = false;
         }
     }
 
@@ -131,7 +112,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
         while(cantExecuteSubObjectives.length < subObjectives.length || executedSubObj){
             SubObjective memory prioritizedSubObjective;
             for (uint i=0; i < subObjectivesLength; i++) {
-                SubObjective memory subObjective = subObjectiveStructs[subObjectives[i]];
+                SubObjective memory subObjective = mappings.subObjectiveStructs[subObjectives[i]];
                 if(subObjective.state == 1 && subObjective.voters.length > mostVotes && isNotInList(subObjective,cantExecuteSubObjectives) ){
                     mostVotes = subObjective.voters.length;
                     prioritizedSubObjective = subObjective;
@@ -182,7 +163,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
 
     function voteToCloseContract( ) public  isSaverActive hasNotVotedClose  {
         closeContractVoters.push(msg.sender);
-        closeContractVotes[msg.sender] = true;
+        mappings.closeContractVotes[msg.sender] = true;
     }
     function closeContract( ) public  onlyAdmin allActiveVoted noApprovedObjectives goalWasReached  {
         //TODO: Code to execute the end of the contract

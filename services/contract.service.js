@@ -46,7 +46,6 @@ const methods = {
     fs.writeFileSync(abiPath, JSON.stringify(abi, null, 2));
 
     const bytecode = contract.evm;
-    console.log("bytecode",bytecode);
     const bytecodePath = path.resolve(
       process.cwd(),
       "build",

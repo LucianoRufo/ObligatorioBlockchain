@@ -1,9 +1,10 @@
 //SPDX-License-Identifier:MIT;
 pragma solidity ^0.6.1;
+pragma experimental ABIEncoderV2;
 
 contract ContratoConfiguracion {
 
-   struct Ahorrista {
+    struct Ahorrista {
         string ci;
         string name;
         string lastName;
@@ -46,23 +47,103 @@ contract ContratoConfiguracion {
         uint256  timeToReportLife;
     }
 
-    address[] public ahorristas;
-    address[] public gestores;
-    address[] public auditores;
+    struct ConfigIn {
+        address payable _savingAccount; 
+        string _objective;
+        uint _savingsObjective; 
+        uint  _minimumDeposit ;
+        uint  _minimumContribution; 
+        bool  _isSavingVisible; 
+        uint _bonusPercentage; 
+        uint _maxCantAhorristas;
+        uint _maxLoan;
+        uint _recargoMoroso; 
+        uint _percentageForRetirements; 
+        uint _timeToReportLife;
+    }
+    struct Loan {
+        address saver;
+        uint debt;
+        uint payments;
+        uint actualDebt;
+    }
+    struct DeathReport {
+        address saver;
+        uint gestorApprovals;
+        bool exist;
+        uint256 dateApproved;
+    }
+
+    struct AhorristaIn {
+        string _ci; 
+        string _name;
+        string _lastname;
+        address payable _address;
+        address payable _beneficiaryAddress;
+        bool _isGestor;
+        bool _isAuditor;
+    }
+
+    struct Postulation {
+        address  postulatorAddress;
+        bool runsForGestor;
+        bool runsForAudit;
+        uint votesForGestor;
+        uint votesForAudit;
+    }
+ 
+    struct VoteLog {
+        bool votedGestor;
+        bool votedAudit;
+        bool exists;
+    }
+    struct SubObjective {
+        uint id; 
+        string description;   
+        address payable subObjectiveAddress;
+        uint payed;
+        uint totalToPay; 
+        uint state; // {0, 1 , 2} = { En proceso, Aprobado, Ejecutado}
+        address[] voters; //También podía ser otro mapping
+        uint nonPrelationOrders;
+    }
+    struct Mappings {
+        mapping(address => Ahorrista) ahorristaStructs; 
+        mapping(address => bool) votedPerPeriodStruct; 
+        mapping(address => bool) closingVotesPerPeriodStruct; 
+        mapping(address => bool) permissionRequestsToSolve; 
+        mapping(address => bool) closeContractVotes; 
+        mapping(address => Loan) loans; 
+        mapping(address => DeathReport) deathReports; 
+        mapping(address => Postulation) postulatedSaversStructs; 
+        mapping(address => VoteLog) votedLogs; 
+        mapping(uint => SubObjective) subObjectiveStructs; 
+    }
+   
+    event LoanEvent(address indexed _saver,  uint _debt);
+    event SubObjectiveCompleted(address indexed _subObjectiveAddress, string _description, uint _amount, address indexed _gestorAddress);
+    ConfigVars  config;
+    Mappings  mappings;
+
+    address[] ahorristas;
+    address[] gestores;
+    address[] auditores;
+    address[] gestorVotersPerPeriod;
+    address[] postulatedSaversArray;
+    address[] votersPerPeriod;
+
+    uint[]  subObjectives;
+    uint approvedObjectives;
 
     address payable public admin;
     address payable public savingAccount;
 
-    ConfigVars public config;
+    bool  isGestorVotingPeriod;
+    bool  isGestorPostulationPeriod;
 
-    address[] public closeContractVoters;
+    address[]  closeContractVoters;
 
-    mapping(address => Ahorrista) public ahorristaStructs; 
-    mapping(address => bool) public votedPerPeriodStruct; 
-    mapping(address => bool) public closingVotesPerPeriodStruct; 
-    mapping(address => bool) public permissionRequestsToSolve; 
-    mapping(address => bool) public closeContractVotes; 
-
+   
 
     constructor( ) public payable {
         admin = msg.sender; //TODO: Admin no puede ser ni gestor ni auditor, agregar aquí a ahorristas.
@@ -98,31 +179,31 @@ contract ContratoConfiguracion {
         _;
     }
     modifier onlyAudit() {
-        require(ahorristaStructs[msg.sender].isAuditor, "Only the auditors can call this function.");
+        require(mappings.ahorristaStructs[msg.sender].isAuditor, "Only the auditors can call this function.");
         _;
     }
 
     modifier auditOrAdmin() {
-        require(ahorristaStructs[msg.sender].isAuditor || msg.sender == admin, "Only the auditor or admin can call this function.");
+        require(mappings.ahorristaStructs[msg.sender].isAuditor || msg.sender == admin, "Only the auditor or admin can call this function.");
         _;
     }
 
     modifier onlyGestor() {
-        require(ahorristaStructs[msg.sender].isGestor, "Only the managers can call this function.");
+        require(mappings.ahorristaStructs[msg.sender].isGestor, "Only the managers can call this function.");
         _;
     }
 
     modifier onlyAhorristaSimple() {
-        require(!ahorristaStructs[msg.sender].isGestor && ahorristaStructs[msg.sender].isAuditor && msg.sender != admin, "Only the admin can call this function.");
+        require(!mappings.ahorristaStructs[msg.sender].isGestor && mappings.ahorristaStructs[msg.sender].isAuditor && msg.sender != admin, "Only the admin can call this function.");
         _;
     }
 
     modifier isSaverActive() {
-        require(ahorristaStructs[msg.sender].payed >= config.minimumContribution && ahorristaStructs[msg.sender].isApproved, "Only enabled account can receive deposits");
+        require(mappings.ahorristaStructs[msg.sender].payed >= config.minimumContribution && mappings.ahorristaStructs[msg.sender].isApproved, "Only enabled account can receive deposits");
         _;
     }
     modifier notAuditNorAdmin() {
-        require( !ahorristaStructs[msg.sender].isAuditor && msg.sender != admin, "Only enabled account can receive deposits");
+        require( !mappings.ahorristaStructs[msg.sender].isAuditor && msg.sender != admin, "Only enabled account can receive deposits");
         _;
     }
 
@@ -137,22 +218,22 @@ contract ContratoConfiguracion {
         _;
     }
     modifier hasNotVoted() {
-        require(!votedPerPeriodStruct[msg.sender] , "Only enabled account can receive deposits");
+        require(!mappings.votedPerPeriodStruct[msg.sender] , "Only enabled account can receive deposits");
         _;
     }
 
     modifier canSeeBalance() {
-        require(msg.sender == admin || ahorristaStructs[msg.sender].isAuditor || ahorristaStructs[msg.sender].canSeeBalance, "Only enabled account can see the balance");
+        require(msg.sender == admin || mappings.ahorristaStructs[msg.sender].isAuditor || mappings.ahorristaStructs[msg.sender].canSeeBalance, "Only enabled account can see the balance");
         _;
     }
 
     modifier hasNotVotedClose() {
-        require(!closeContractVotes[msg.sender], "You can only vote to close once.");
+        require(!mappings.closeContractVotes[msg.sender], "You can only vote to close once.");
         _;
     }
 
     modifier hasNoDebts() {
-        require(ahorristaStructs[msg.sender].debt > 0, "Only enabled account can see the balance");
+        require(mappings.ahorristaStructs[msg.sender].debt > 0, "Only enabled account can see the balance");
         _;
     }
 
@@ -162,26 +243,24 @@ contract ContratoConfiguracion {
     }
 
 
-    function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
-        uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso, 
-        uint _percentageForRetirements, uint _timeToReportLife ) public onlyAdmin {
+    function configureContract( ConfigIn memory configVarsIn ) public onlyAdmin {
         
-        savingAccount = _savingAccount;//_savingAccount
-        config.accountObjectiveDescription = _objective;
-        config.accountSavingsObjective = _savingsObjective;
-        config.minimumContribution = _minimumContribution;
-        config.minimumDeposit = _minimumDeposit;
-        config.isSavingVisible = _isSavingVisible;
-        config.bonusPercentage = _bonusPercentage;
-        if(_maxCantAhorristas >= 6 ){
-            config.maxAhorristas = _maxCantAhorristas;
+        savingAccount = configVarsIn._savingAccount;//_savingAccount
+        config.accountObjectiveDescription = configVarsIn._objective;
+        config.accountSavingsObjective = configVarsIn._savingsObjective;
+        config.minimumContribution = configVarsIn._minimumContribution;
+        config.minimumDeposit = configVarsIn._minimumDeposit;
+        config.isSavingVisible =configVarsIn._isSavingVisible;
+        config.bonusPercentage = configVarsIn._bonusPercentage;
+        if(configVarsIn._maxCantAhorristas >= 6 ){
+            config.maxAhorristas = configVarsIn._maxCantAhorristas;
             config.maxGestores = config.maxAhorristas / 3;
             config.maxAuditores = config.maxGestores / 2;
         }
-        config.maxLoan = _maxLoan;
-        config.recargoMoroso = _recargoMoroso;
-        config.percentageForRetirements = _percentageForRetirements;
-        config.timeToReportLife = _timeToReportLife;
+        config.maxLoan =configVarsIn._maxLoan;
+        config.recargoMoroso = configVarsIn._recargoMoroso;
+        config.percentageForRetirements = configVarsIn._percentageForRetirements;
+        config.timeToReportLife = configVarsIn._timeToReportLife;
     }
 
     function enableContract( ) public onlyAdmin {
