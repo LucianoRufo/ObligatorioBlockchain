@@ -10,76 +10,49 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_gestorAddress",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "_objectiveAddress",
+        "name": "_saver",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_value",
+        "name": "_debt",
         "type": "uint256"
       }
     ],
-    "name": "Execute",
+    "name": "LoanEvent",
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "accountEnabled",
-    "outputs": [
+    "anonymous": false,
+    "inputs": [
       {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "accountObjectiveDescription",
-    "outputs": [
+        "indexed": true,
+        "internalType": "address",
+        "name": "_subObjectiveAddress",
+        "type": "address"
+      },
       {
+        "indexed": false,
         "internalType": "string",
-        "name": "",
+        "name": "_description",
         "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "accountSavingsObjective",
-    "outputs": [
+      },
       {
+        "indexed": false,
         "internalType": "uint256",
-        "name": "",
+        "name": "_amount",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "actualSavings",
-    "outputs": [
+      },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "address",
+        "name": "_gestorAddress",
+        "type": "address"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "SubObjectiveCompleted",
+    "type": "event"
   },
   {
     "inputs": [
@@ -99,12 +72,12 @@
         "type": "string"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_address",
         "type": "address"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_beneficiaryAddress",
         "type": "address"
       },
@@ -142,12 +115,12 @@
         "type": "string"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_address",
         "type": "address"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "_beneficiaryAddress",
         "type": "address"
       },
@@ -160,6 +133,11 @@
         "internalType": "bool",
         "name": "_isAuditor",
         "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deposit",
+        "type": "uint256"
       }
     ],
     "name": "addAhorristaByDeposit",
@@ -185,6 +163,11 @@
         "internalType": "uint256",
         "name": "_total",
         "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_subObjectiveAddress",
+        "type": "address"
       }
     ],
     "name": "addSubObjective",
@@ -197,7 +180,7 @@
     "name": "admin",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "",
         "type": "address"
       }
@@ -236,12 +219,12 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "ahorristaAddress",
         "type": "address"
       },
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "beneficiaryAddress",
         "type": "address"
       },
@@ -266,8 +249,33 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint256",
+        "name": "toDepositOnApprove",
+        "type": "uint256"
+      },
+      {
         "internalType": "bool",
         "name": "isApproved",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "isActivated",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "canSeeBalance",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastPaymentDate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isRetired",
         "type": "bool"
       }
     ],
@@ -294,15 +302,34 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "askForLoan",
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "saverToApproveAddress",
+        "type": "address"
+      }
+    ],
+    "name": "approveSaver",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "askSavingPermission",
+    "name": "askBalancePermission",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "askForLoan",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -328,45 +355,6 @@
   },
   {
     "inputs": [],
-    "name": "bonusPercentage",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "cantAhorristas",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "cantGestores",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "closeContract",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -375,7 +363,45 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "closeContractVoters",
+    "outputs": [
+      {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "closeContractVotes",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address payable",
         "name": "_saver",
         "type": "address"
       }
@@ -406,6 +432,119 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "config",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "accountObjectiveDescription",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "accountSavingsObjective",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "actualSavings",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "accountEnabled",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cantAhorristas",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxAhorristas",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cantGestores",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxGestores",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "cantAuditores",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxAuditores",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "subObjectiveCounter",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minimumContribution",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minimumDeposit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isSavingVisible",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "isVotingPeriod",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "bonusPercentage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "activeSavers",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "maxLoan",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "recargoMoroso",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "percentageForRetirements",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timeToReportLife",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -452,9 +591,70 @@
         "internalType": "uint256",
         "name": "_maxCantAhorristas",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxLoan",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_recargoMoroso",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_percentageForRetirements",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_timeToReportLife",
+        "type": "uint256"
       }
     ],
     "name": "configureContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "deathReports",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "saver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "gestorApprovals",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "exist",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dateApproved",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "enableContract",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -471,6 +671,25 @@
     "name": "finishGestorVoting",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "gestorVotersPerPeriod",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -506,8 +725,21 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "saverToApprove",
+        "type": "address"
+      }
+    ],
+    "name": "giveBalancePermission",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "isSavingVisible",
+    "name": "isGestorPostulationPeriod",
     "outputs": [
       {
         "internalType": "bool",
@@ -520,7 +752,7 @@
   },
   {
     "inputs": [],
-    "name": "isVotingPeriod",
+    "name": "isGestorVotingPeriod",
     "outputs": [
       {
         "internalType": "bool",
@@ -532,82 +764,87 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "loans",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "saver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "debt",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "payments",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "actualDebt",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "payRecharge",
+        "type": "bool"
+      }
+    ],
     "name": "makeContribution",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "maxAhorristas",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxAuditores",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxGestores",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minimumContribution",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "minimumDeposit",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "payDebt",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "permissionRequestsToSolve",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -631,8 +868,79 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "postulatedSaversArray",
+    "outputs": [
+      {
         "internalType": "address",
-        "name": "_saver",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "postulatedSaversStructs",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "postulatorAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "runsForGestor",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "runsForAudit",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "votesForGestor",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "votesForAudit",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "saverToApprove",
+        "type": "address"
+      }
+    ],
+    "name": "removeBalancePermission",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "saver",
         "type": "address"
       }
     ],
@@ -642,7 +950,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "retireWithoutWithdrawal",
+        "type": "bool"
+      }
+    ],
     "name": "retireFromFund",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -670,19 +984,6 @@
   },
   {
     "inputs": [],
-    "name": "savingObjective",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "startGestorPostulation",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -700,19 +1001,6 @@
     "name": "startVotingPeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "subObjectiveCounter",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -734,6 +1022,11 @@
         "internalType": "string",
         "name": "description",
         "type": "string"
+      },
+      {
+        "internalType": "address payable",
+        "name": "subObjectiveAddress",
+        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -795,6 +1088,32 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "auditToVote",
+        "type": "address"
+      }
+    ],
+    "name": "voteAuditor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "gestorToVote",
+        "type": "address"
+      }
+    ],
+    "name": "voteGestor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "subObjectiveId",
         "type": "uint256"
@@ -803,6 +1122,42 @@
     "name": "voteSubObjective",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "voteToCloseContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "votedLogs",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "votedGestor",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "votedAudit",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "exists",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

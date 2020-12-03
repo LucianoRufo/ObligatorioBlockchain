@@ -1,8 +1,8 @@
 //SPDX-License-Identifier:MIT;
-pragma solidity ^0.6.1;
+pragma solidity ^0.6.1; 
 
 import "./ContratoAhorristaConfig.sol";
-
+ 
 
 contract ContratoGestorVoting is ContratoAhorristaConfig {
 
@@ -13,7 +13,7 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
         uint votesForGestor;
         uint votesForAudit;
     }
-
+ 
     struct VoteLog {
         bool votedGestor;
         bool votedAudit;
@@ -39,7 +39,7 @@ contract ContratoGestorVoting is ContratoAhorristaConfig {
         _;
     }
     modifier moreThanSixActiveSavers() {
-        require(activeSavers >= 6, "You can only start gestor voting if there are 6 or more savers active.");
+        require(config.activeSavers >= 6, "You can only start gestor voting if there are 6 or more savers active.");
         _;
     }
     constructor( )

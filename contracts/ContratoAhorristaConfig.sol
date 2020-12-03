@@ -25,18 +25,18 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     mapping(address => DeathReport) public deathReports; 
 
     modifier saverIsOnTime() {  
-        require(now - deathReports[msg.sender].dateApproved < timeToReportLife, "The time to report life was ended.");
+        require(now - deathReports[msg.sender].dateApproved < config.timeToReportLife, "The time to report life was ended.");
         _;
     }
 
     modifier saverWasReportedAndOutOfTime() {  
-        require(deathReports[msg.sender].exist && now - deathReports[msg.sender].dateApproved >= timeToReportLife, "This user can't be deleted");
+        require(deathReports[msg.sender].exist && now - deathReports[msg.sender].dateApproved >= config.timeToReportLife, "This user can't be deleted");
         _;
     }
 
     constructor( )
       ContratoConfiguracion() public { }
- 
+    
     function addAhorristaAdmin(string memory _ci ,string memory _name,string memory _lastname, address payable _address,address payable _beneficiaryAddress,  bool _isGestor, bool _isAuditor) public onlyAdmin {
         ahorristas.push(_address);
 
@@ -65,7 +65,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     function addAhorristaByDeposit(string memory _ci ,string memory _name,string memory _lastname, address payable _address,address payable _beneficiaryAddress,  bool _isGestor, bool _isAuditor, uint deposit) public  {
         //TODO: Código para hacer la transferencia y depósito
-        if(deposit >= minimumDeposit){
+        if(deposit >= config.minimumDeposit){
             ahorristas.push(_address);
 
             ahorristaStructs[_address] = Ahorrista(
@@ -96,13 +96,13 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     function approveSaver(address payable saverToApproveAddress) public  onlyAudit  {
         //TODO 
         ahorristaStructs[saverToApproveAddress].isApproved = true;
-        if(ahorristaStructs[saverToApproveAddress].toDepositOnApprove >= minimumContribution){
+        if(ahorristaStructs[saverToApproveAddress].toDepositOnApprove >= config.minimumContribution){
             ahorristaStructs[saverToApproveAddress].isActivated = true;
-            activeSavers++;
+            config.activeSavers++;
         }
         saverToApproveAddress.transfer(ahorristaStructs[saverToApproveAddress].toDepositOnApprove);
         //TODO: Check si esto funciona y transfiere al contrato, o hay que hacer variable balance etc.
-        actualSavings+= ahorristaStructs[saverToApproveAddress].toDepositOnApprove;
+        config.actualSavings+= ahorristaStructs[saverToApproveAddress].toDepositOnApprove;
         ahorristaStructs[saverToApproveAddress].toDepositOnApprove = 0;
 
     }
@@ -124,7 +124,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     function askForLoan(uint amount) public  isSaverActive  {
         //TODO: Transfer logic & emit event
-        if( amount <= maxLoan){
+        if( amount <= config.maxLoan){
             loans[msg.sender] = Loan(
                 {
                     saver: msg.sender,
@@ -145,10 +145,10 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         if(retireWithoutWithdrawal){
             ahorristaStructs[msg.sender].isRetired = true;
         } else {
-            uint amountToReturn = ahorristaStructs[msg.sender].payed / 100 * percentageForRetirements;
-            if(actualSavings >= amountToReturn){
+            uint amountToReturn = ahorristaStructs[msg.sender].payed / 100 * config.percentageForRetirements;
+            if(config.actualSavings >= amountToReturn){
                 ahorristaStructs[msg.sender].isRetired = true;
-                actualSavings-=amountToReturn;
+                config.actualSavings-=amountToReturn;
                 msg.sender.transfer(amountToReturn);
             }
         }
@@ -177,36 +177,36 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     function closeDeadSaverAccount(address payable _saver) public  onlyGestor saverWasReportedAndOutOfTime  {
         //TODO: Chequear si el retirado es admin / gestor / auditor -> abrir inscripciones y disparar votación de alguna forma.
-        uint amountToReturn = ahorristaStructs[_saver].payed / 100 * percentageForRetirements -  ahorristaStructs[_saver].debt;
-        if(actualSavings >= amountToReturn &&  amountToReturn > 0){
+        uint amountToReturn = ahorristaStructs[_saver].payed / 100 * config.percentageForRetirements -  ahorristaStructs[_saver].debt;
+        if(config.actualSavings >= amountToReturn &&  amountToReturn > 0){
             ahorristaStructs[_saver].isRetired = true;
             ahorristaStructs[_saver].isActivated = false;
             ahorristaStructs[_saver].isApproved = false;
-            actualSavings-=amountToReturn;
+            config.actualSavings-=amountToReturn;
             _saver.transfer(amountToReturn);
         }
     }
  
     function makeContribution( uint amount, bool payRecharge) public isContractEnabled   {
-        if( amount > minimumDeposit ){
+        if( amount > config.minimumDeposit ){
             if(now - ahorristaStructs[msg.sender].lastPaymentDate < 1000 * 60 * 60 * 24 * 60 ){
                 if(payRecharge){
-                    amount+= recargoMoroso;
+                    amount+= config.recargoMoroso;
                     savingAccount.transfer(amount);
                     ahorristaStructs[msg.sender].payed+=amount;
-                    if (ahorristaStructs[msg.sender].payed > minimumContribution){
+                    if (ahorristaStructs[msg.sender].payed > config.minimumContribution){
                         ahorristaStructs[msg.sender].isActivated = true;
                         ahorristaStructs[msg.sender].lastPaymentDate = now; 
-                        activeSavers++;
+                        config.activeSavers++;
                     }
                 }
             }else {
                 savingAccount.transfer(amount);
                 ahorristaStructs[msg.sender].payed+=amount;
-                if (ahorristaStructs[msg.sender].payed > minimumContribution){
+                if (ahorristaStructs[msg.sender].payed > config.minimumContribution){
                     ahorristaStructs[msg.sender].isActivated = true;
                     ahorristaStructs[msg.sender].lastPaymentDate = now; 
-                    activeSavers++;
+                    config.activeSavers++;
                 }
             }
         }

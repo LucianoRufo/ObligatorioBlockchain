@@ -1,11 +1,11 @@
 //SPDX-License-Identifier:MIT;
 pragma solidity ^0.6.1;
 import "./ContratoGestorVoting.sol";
-
+  
 contract SubObjectiveContract is ContratoGestorVoting {
     struct SubObjective {
         uint id; 
-        string description;  
+        string description;   
         address payable subObjectiveAddress;
         uint payed;
         uint totalToPay; 
@@ -41,17 +41,17 @@ contract SubObjectiveContract is ContratoGestorVoting {
     }
 
     modifier goalWasReached() { 
-        require(actualSavings >= accountSavingsObjective  , "The saving goal was not reached.");
+        require(config.actualSavings >= config.accountSavingsObjective  , "The saving goal was not reached.");
         _;
     }
 
     function addSubObjective(string memory _description ,uint  _total, address payable _subObjectiveAddress) public onlyAdmin {
         address[] memory votersArray;
-        subObjectives.push(subObjectiveCounter);
+        subObjectives.push(config.subObjectiveCounter);
 
-        subObjectiveStructs[subObjectiveCounter] = SubObjective(
+        subObjectiveStructs[config.subObjectiveCounter] = SubObjective(
             {
-                id:subObjectiveCounter,
+                id:config.subObjectiveCounter,
                 description: _description,
                 payed: 0,
                 totalToPay: _total,
@@ -61,11 +61,11 @@ contract SubObjectiveContract is ContratoGestorVoting {
                 subObjectiveAddress: _subObjectiveAddress
             }
         );
-        subObjectiveCounter++;
+        config.subObjectiveCounter++;
     }
 
     function startVotingPeriod() public onlyAdmin {
-        isVotingPeriod = true;
+        config.isVotingPeriod = true;
     }
 
     function voteSubObjective(uint subObjectiveId) public onVotingPeriod isSaverActive hasNotVoted isSubObjectiveInProcess(subObjectiveId) {
@@ -108,7 +108,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
 
         // Retorno variables de votacion a valores default
         address[] memory votersArray;
-        isVotingPeriod = false;
+        config.isVotingPeriod = false;
         uint arrayLength = votersPerPeriod.length;
         for (uint i=0; i< arrayLength; i++) {
             votedPerPeriodStruct[votersPerPeriod[i]] = false;
@@ -139,9 +139,9 @@ contract SubObjectiveContract is ContratoGestorVoting {
             }
 
             //See if it can be executed
-            if(actualSavings > prioritizedSubObjective.totalToPay){
+            if(config.actualSavings > prioritizedSubObjective.totalToPay){
                 if(isFirstInPriority){
-                    actualSavings = actualSavings - prioritizedSubObjective.totalToPay;
+                    config.actualSavings = config.actualSavings - prioritizedSubObjective.totalToPay;
                     prioritizedSubObjective.state = 2;
                     prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                     executedSubObj = true;
@@ -151,7 +151,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
                 else {
                     prioritizedSubObjective.nonPrelationOrders++;
                     if(prioritizedSubObjective.nonPrelationOrders >= 2){
-                        actualSavings = actualSavings - prioritizedSubObjective.totalToPay;
+                        config.actualSavings = config.actualSavings - prioritizedSubObjective.totalToPay;
                         prioritizedSubObjective.state = 2;
                         prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                         executedSubObj = true;

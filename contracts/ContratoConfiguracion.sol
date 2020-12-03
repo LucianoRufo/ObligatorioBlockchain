@@ -22,6 +22,30 @@ contract ContratoConfiguracion {
         bool isRetired;
     }
 
+    struct ConfigVars {
+        string  accountObjectiveDescription;
+        uint  accountSavingsObjective;
+        uint  actualSavings;
+        bool  accountEnabled;
+        uint  cantAhorristas;
+        uint  maxAhorristas;
+        uint  cantGestores;
+        uint  maxGestores;
+        uint  cantAuditores;
+        uint  maxAuditores;
+        uint  subObjectiveCounter;
+        uint  minimumContribution;
+        uint  minimumDeposit;
+        bool  isSavingVisible;
+        bool  isVotingPeriod;
+        uint  bonusPercentage;
+        uint  activeSavers;
+        uint  maxLoan;
+        uint  recargoMoroso;
+        uint  percentageForRetirements;
+        uint256  timeToReportLife;
+    }
+
     address[] public ahorristas;
     address[] public gestores;
     address[] public auditores;
@@ -29,29 +53,7 @@ contract ContratoConfiguracion {
     address payable public admin;
     address payable public savingAccount;
 
-    string public accountObjectiveDescription;
-    uint public accountSavingsObjective;
-    uint public actualSavings;
-
-    bool public accountEnabled;
-
-    uint public cantAhorristas;
-    uint public maxAhorristas;
-    uint public cantGestores;
-    uint public maxGestores;
-    uint public cantAuditores;
-    uint public maxAuditores;
-    uint public subObjectiveCounter;
-    uint public minimumContribution;
-    uint public minimumDeposit;
-    bool public isSavingVisible;
-    bool public isVotingPeriod;
-    uint public bonusPercentage;
-    uint public activeSavers;
-    uint public maxLoan;
-    uint public recargoMoroso;
-    uint public percentageForRetirements;
-    uint256 public timeToReportLife;
+    ConfigVars public config;
 
     address[] public closeContractVoters;
 
@@ -64,13 +66,32 @@ contract ContratoConfiguracion {
 
     constructor( ) public payable {
         admin = msg.sender; //TODO: Admin no puede ser ni gestor ni auditor, agregar aquí a ahorristas.
-        isVotingPeriod = false;
-        subObjectiveCounter = 0;
-        actualSavings = 0;
-        maxAhorristas = 6;
-        maxGestores = maxAhorristas / 3;
-        maxAuditores = maxGestores / 2;
-        activeSavers = 0;
+        config = ConfigVars(
+            {
+                isVotingPeriod: false,
+                subObjectiveCounter: 0,
+                actualSavings: 0,
+                maxAhorristas: 6,
+                maxGestores: 6 / 3,
+                maxAuditores: 2 / 2,
+                activeSavers: 0,
+                accountObjectiveDescription:"",
+                accountSavingsObjective:0,
+                accountEnabled:false,
+                cantAhorristas:0,
+                cantGestores:0,
+                cantAuditores:0,
+                minimumContribution:100,
+                minimumDeposit:50,
+                isSavingVisible:false,
+                bonusPercentage:10,
+                maxLoan:200,
+                recargoMoroso:50,
+                percentageForRetirements:15,
+                timeToReportLife:1000 * 60 * 60 * 24 * 7
+            }
+        );
+       
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
@@ -97,7 +118,7 @@ contract ContratoConfiguracion {
     }
 
     modifier isSaverActive() {
-        require(ahorristaStructs[msg.sender].payed >= minimumContribution && ahorristaStructs[msg.sender].isApproved, "Only enabled account can receive deposits");
+        require(ahorristaStructs[msg.sender].payed >= config.minimumContribution && ahorristaStructs[msg.sender].isApproved, "Only enabled account can receive deposits");
         _;
     }
     modifier notAuditNorAdmin() {
@@ -106,13 +127,13 @@ contract ContratoConfiguracion {
     }
 
     modifier isContractEnabled() {
-        require(accountEnabled == true, "Only enabled account can receive deposits");
+        require(config.accountEnabled == true, "Only enabled account can receive deposits");
         _;
     }
 
    
     modifier onVotingPeriod() {
-        require(isVotingPeriod == true, "You can only vote in voting period.");
+        require(config.isVotingPeriod == true, "You can only vote in voting period.");
         _;
     }
     modifier hasNotVoted() {
@@ -136,7 +157,7 @@ contract ContratoConfiguracion {
     }
 
     modifier allActiveVoted() {
-        require(closeContractVoters.length == activeSavers, "Not all active savers voted");
+        require(closeContractVoters.length == config.activeSavers, "Not all active savers voted");
         _;
     }
 
@@ -146,26 +167,26 @@ contract ContratoConfiguracion {
         uint _percentageForRetirements, uint _timeToReportLife ) public onlyAdmin {
         
         savingAccount = _savingAccount;//_savingAccount
-        accountObjectiveDescription = _objective;
-        accountSavingsObjective = _savingsObjective;
-        minimumContribution = _minimumContribution;
-        minimumDeposit = _minimumDeposit;
-        isSavingVisible = _isSavingVisible;
-        bonusPercentage = _bonusPercentage;
+        config.accountObjectiveDescription = _objective;
+        config.accountSavingsObjective = _savingsObjective;
+        config.minimumContribution = _minimumContribution;
+        config.minimumDeposit = _minimumDeposit;
+        config.isSavingVisible = _isSavingVisible;
+        config.bonusPercentage = _bonusPercentage;
         if(_maxCantAhorristas >= 6 ){
-            maxAhorristas = _maxCantAhorristas;
-            maxGestores = maxAhorristas / 3;
-            maxAuditores = maxGestores / 2;
+            config.maxAhorristas = _maxCantAhorristas;
+            config.maxGestores = config.maxAhorristas / 3;
+            config.maxAuditores = config.maxGestores / 2;
         }
-        maxLoan = _maxLoan;
-        recargoMoroso = _recargoMoroso;
-        percentageForRetirements = _percentageForRetirements;
-        timeToReportLife = _timeToReportLife;
+        config.maxLoan = _maxLoan;
+        config.recargoMoroso = _recargoMoroso;
+        config.percentageForRetirements = _percentageForRetirements;
+        config.timeToReportLife = _timeToReportLife;
     }
 
     function enableContract( ) public onlyAdmin {
         //TODO: verificar condiciones -> si hay suficientes ahorristas, gestores y auditores.
-        accountEnabled = true;
+        config.accountEnabled = true;
     }
 
 

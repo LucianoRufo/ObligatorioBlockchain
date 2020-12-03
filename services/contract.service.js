@@ -22,14 +22,20 @@ const methods = {
       settings: { outputSelection: { "*": { "*": ["abi", "evm.bytecode"] } } },
     };
 
+
     const compliedContract = JSON.parse(
       solc.compile(JSON.stringify(compilerInput), { import: getImports })
     );
-    console.log("antes");
+    if (!compliedContract) {  
+      console.error("ERRORS\n","NO OUTPUT");  
+    } else if (compliedContract.errors) {
+      // something went wrong.
+      console.error("ERRORS <<<<<<<<<<<<<<<<<<<<<<<<\n");
+      compliedContract.errors.map(error => console.log(error.formattedMessage));
+    }
 
     const contractName = contractFileName.replace(".sol", "");
     const contract = compliedContract.contracts[contractFileName][contractName];
-    console.log("pasó");
 
     const abi = contract.abi;
     const abiPath = path.resolve(
@@ -40,6 +46,7 @@ const methods = {
     fs.writeFileSync(abiPath, JSON.stringify(abi, null, 2));
 
     const bytecode = contract.evm;
+    console.log("bytecode",bytecode);
     const bytecodePath = path.resolve(
       process.cwd(),
       "build",
@@ -93,7 +100,7 @@ const methods = {
     const abiPath = path.resolve(
       process.cwd(),
       "build",
-      "CuentaAhorro" + "_abi.json"
+      contractName + "_abi.json"
     );
     const abi = JSON.parse(fs.readFileSync(abiPath, "utf8"));
 
@@ -105,6 +112,7 @@ module.exports = { ...methods };
 
 //Agregar más casos de necesitar más herencias.
 function getImports(dependency) {
+
   switch (dependency) {
     case "ContratoConfiguracion.sol":
       return {
