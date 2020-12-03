@@ -14,6 +14,9 @@ contract SubObjectiveContract is ContratoGestorVoting {
         uint nonPrelationOrders;
     }
 
+    event SubObjectiveCompleted(address indexed _subObjectiveAddress, string _description, uint _amount, address indexed _gestorAddress);
+
+
     address[] public votersPerPeriod;
     uint[] public subObjectives;
     mapping(uint => SubObjective) public subObjectiveStructs; 
@@ -127,7 +130,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
                     prioritizedSubObjective.state = 2;
                     prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                     executedSubObj = true;
-                    //TODO: Generar evento
+                    emit SubObjectiveCompleted(prioritizedSubObjective.subObjectiveAddress, prioritizedSubObjective.description,prioritizedSubObjective.totalToPay, msg.sender);
                 }
                 else {
                     prioritizedSubObjective.nonPrelationOrders++;
@@ -136,7 +139,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
                         prioritizedSubObjective.state = 2;
                         prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                         executedSubObj = true;
-                        //TODO: Generar evento
+                        emit SubObjectiveCompleted(prioritizedSubObjective.subObjectiveAddress, prioritizedSubObjective.description,prioritizedSubObjective.totalToPay, msg.sender);
                     }
                 }
                 

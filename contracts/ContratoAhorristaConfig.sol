@@ -18,6 +18,9 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         bool exist;
         uint256 dateApproved;
     }
+
+    event LoanEvent(address indexed _saver,  uint _debt);
+
     mapping(address => Loan) public loans; 
     mapping(address => DeathReport) public deathReports; 
 
@@ -132,6 +135,8 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             );
             ahorristaStructs[msg.sender].debt = amount;
             ahorristaStructs[msg.sender].isActivated = false;
+            msg.sender.transfer(amount);
+            emit LoanEvent(msg.sender, amount);
         }
     }
 
@@ -144,13 +149,12 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             if(actualSavings >= amountToReturn){
                 ahorristaStructs[msg.sender].isRetired = true;
                 actualSavings-=amountToReturn;
-                //TODO: Code to transfer from the savings to the address.
+                msg.sender.transfer(amountToReturn);
             }
         }
     }
     
     function reportSaverDeath(address saver) public  onlyGestor  {
-        //TODO
         if(deathReports[saver].exist){
             deathReports[saver].gestorApprovals++;
             if(deathReports[saver].gestorApprovals >= 2){
@@ -171,7 +175,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         deathReports[msg.sender].exist = false;
     }
 
-    function closeDeadSaverAccount(address _saver) public  onlyGestor saverWasReportedAndOutOfTime  {
+    function closeDeadSaverAccount(address payable _saver) public  onlyGestor saverWasReportedAndOutOfTime  {
         //TODO: Chequear si el retirado es admin / gestor / auditor -> abrir inscripciones y disparar votación de alguna forma.
         uint amountToReturn = ahorristaStructs[_saver].payed / 100 * percentageForRetirements -  ahorristaStructs[_saver].debt;
         if(actualSavings >= amountToReturn &&  amountToReturn > 0){
@@ -179,7 +183,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             ahorristaStructs[_saver].isActivated = false;
             ahorristaStructs[_saver].isApproved = false;
             actualSavings-=amountToReturn;
-            //TODO: Code to transfer from the savings to the beneficiary address.
+            _saver.transfer(amountToReturn);
         }
     }
  

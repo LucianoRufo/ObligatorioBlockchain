@@ -21,13 +21,7 @@ contract ContratoConfiguracion {
         uint256 lastPaymentDate;
         bool isRetired;
     }
-   
-    //Indexed event to execute and search by indexes. TODO: Vincular mejor el objetivo .
-    event Execute(
-        address indexed _gestorAddress,
-        address indexed _objectiveAddress,
-        uint _value
-    );
+
 
     address[] public ahorristas;
     address[] public gestores;
