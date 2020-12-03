@@ -22,11 +22,10 @@ contract ContratoConfiguracion {
         bool isRetired;
     }
 
-
     address[] public ahorristas;
     address[] public gestores;
     address[] public auditores;
- 
+
     address payable public admin;
     address payable public savingAccount;
 
@@ -54,10 +53,13 @@ contract ContratoConfiguracion {
     uint public percentageForRetirements;
     uint256 public timeToReportLife;
 
+    address[] public closeContractVoters;
+
     mapping(address => Ahorrista) public ahorristaStructs; 
     mapping(address => bool) public votedPerPeriodStruct; 
     mapping(address => bool) public closingVotesPerPeriodStruct; 
     mapping(address => bool) public permissionRequestsToSolve; 
+    mapping(address => bool) public closeContractVotes; 
 
 
     constructor( ) public payable {
@@ -123,10 +125,21 @@ contract ContratoConfiguracion {
         _;
     }
 
+    modifier hasNotVotedClose() {
+        require(!closeContractVotes[msg.sender], "You can only vote to close once.");
+        _;
+    }
+
     modifier hasNoDebts() {
         require(ahorristaStructs[msg.sender].debt > 0, "Only enabled account can see the balance");
         _;
     }
+
+    modifier allActiveVoted() {
+        require(closeContractVoters.length == activeSavers, "Not all active savers voted");
+        _;
+    }
+
 
     function configureContract(address payable _savingAccount, string memory _objective,uint _savingsObjective, uint  _minimumDeposit ,
         uint  _minimumContribution, bool  _isSavingVisible, uint _bonusPercentage, uint _maxCantAhorristas, uint _maxLoan,uint _recargoMoroso, 
@@ -154,4 +167,6 @@ contract ContratoConfiguracion {
         //TODO: verificar condiciones -> si hay suficientes ahorristas, gestores y auditores.
         accountEnabled = true;
     }
+
+
 }

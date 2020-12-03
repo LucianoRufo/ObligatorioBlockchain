@@ -19,15 +19,29 @@ contract SubObjectiveContract is ContratoGestorVoting {
 
     address[] public votersPerPeriod;
     uint[] public subObjectives;
+    uint approvedObjectives;
+
     mapping(uint => SubObjective) public subObjectiveStructs; 
 
 
     constructor( )
-      ContratoGestorVoting() public { }  
+      ContratoGestorVoting() public {
+          approvedObjectives = 0;
+       }  
     
     
     modifier isSubObjectiveInProcess(uint id) {
         require(subObjectiveStructs[id].state == 0 , "Only in process subobjectives can be voted");
+        _;
+    }
+
+    modifier noApprovedObjectives() {
+        require(approvedObjectives == 0 , "Only in process subobjectives can be voted");
+        _;
+    }
+
+    modifier goalWasReached() { 
+        require(actualSavings >= accountSavingsObjective  , "The saving goal was not reached.");
         _;
     }
 
@@ -84,6 +98,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
             SubObjective memory subObjective = subObjectiveStructs[subObjectives[i]];
             if( subObjective.voters.length == mostVotes ){
                 subObjective.state = 1;
+                approvedObjectives++;
             }
             else {
                 address[] memory newVoters;
@@ -130,6 +145,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
                     prioritizedSubObjective.state = 2;
                     prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                     executedSubObj = true;
+                    approvedObjectives--;
                     emit SubObjectiveCompleted(prioritizedSubObjective.subObjectiveAddress, prioritizedSubObjective.description,prioritizedSubObjective.totalToPay, msg.sender);
                 }
                 else {
@@ -139,6 +155,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
                         prioritizedSubObjective.state = 2;
                         prioritizedSubObjective.subObjectiveAddress.transfer(prioritizedSubObjective.totalToPay);
                         executedSubObj = true;
+                        approvedObjectives--;
                         emit SubObjectiveCompleted(prioritizedSubObjective.subObjectiveAddress, prioritizedSubObjective.description,prioritizedSubObjective.totalToPay, msg.sender);
                     }
                 }
@@ -161,5 +178,13 @@ contract SubObjectiveContract is ContratoGestorVoting {
             }
         }
         return true;
+    }
+
+    function voteToCloseContract( ) public  isSaverActive hasNotVotedClose  {
+        closeContractVoters.push(msg.sender);
+        closeContractVotes[msg.sender] = true;
+    }
+    function closeContract( ) public  onlyAdmin allActiveVoted noApprovedObjectives goalWasReached  {
+        //TODO: Code to execute the end of the contract
     }
 }

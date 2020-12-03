@@ -221,7 +221,5 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         savingAccount.transfer(amount);
     }
 
-    function closeContract( ) public  onlyAdmin  {
-        //TODO
-    }
+
 }
