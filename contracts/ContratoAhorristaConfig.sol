@@ -210,7 +210,6 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                 }
             }
         }
-        //TODO Execute the contract if objective is reached
     }
 
     function payDebt(uint amount ) public    {
