@@ -148,19 +148,6 @@ contract SubObjectiveContract is ContratoGestorVoting {
         }
     }
 
-
-    //Private - Aux functions
-    function isNotInList(SubObjective memory subObjective,SubObjective[] storage cantExecuteSubObjectives) private view returns (bool)  {
-        uint cantExecuteSubObjectivesLength = cantExecuteSubObjectives.length;
-        for (uint i=0; i < cantExecuteSubObjectivesLength; i++) {
-            SubObjective memory impossibleSubObjective = cantExecuteSubObjectives[i];
-            if (impossibleSubObjective.id == subObjective.id){
-                return false;
-            }
-        }
-        return true;
-    }
-
     function voteToCloseContract( ) public  isSaverActive hasNotVotedClose  {
         closeContractVoters.push(msg.sender);
         mappings.closeContractVotes[msg.sender] = true;
@@ -209,5 +196,17 @@ contract SubObjectiveContract is ContratoGestorVoting {
                 ahorrista.ahorristaAddress.transfer(toReturn);
             }
         }
+    }
+
+    //Private - Aux functions
+    function isNotInList(SubObjective memory subObjective,SubObjective[] storage cantExecuteSubObjectives) private view returns (bool)  {
+        uint cantExecuteSubObjectivesLength = cantExecuteSubObjectives.length;
+        for (uint i=0; i < cantExecuteSubObjectivesLength; i++) {
+            SubObjective memory impossibleSubObjective = cantExecuteSubObjectives[i];
+            if (impossibleSubObjective.id == subObjective.id){
+                return false;
+            }
+        }
+        return true;
     }
 }
