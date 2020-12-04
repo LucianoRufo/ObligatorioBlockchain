@@ -166,6 +166,48 @@ contract SubObjectiveContract is ContratoGestorVoting {
         mappings.closeContractVotes[msg.sender] = true;
     }
     function closeContract( ) public  onlyAdmin allActiveVoted noApprovedObjectives goalWasReached  {
-        //TODO: Code to execute the end of the contract
+        //Transfer to company
+        companyToPay.transfer(config.actualSavings / 100 * config.commissionPercentage);
+        //Transfer to savers if has no debts
+        uint ahorristasLength = ahorristas.length;
+        uint gestoresLength = gestores.length;
+        uint auditoresLength = ahorristas.length;
+
+        for (uint i=0; i < ahorristasLength; i++) {
+            address ahorristaAddress = ahorristas[i];
+            Ahorrista memory ahorrista = mappings.ahorristaStructs[ahorristaAddress];
+            uint contribution = ahorrista.payed;
+            uint debt = ahorrista.debt;
+            uint proportionalReturnsPercentage = config.actualSavings / contribution;
+            uint winnings = proportionalReturnsPercentage * config.actualSavings;
+            if(winnings > debt){
+                uint toReturn = winnings - debt;
+                ahorrista.ahorristaAddress.transfer(toReturn);
+            }
+        }
+        for (uint i=0; i < gestoresLength; i++) {
+            address ahorristaAddress = gestores[i];
+            Ahorrista memory ahorrista = mappings.ahorristaStructs[ahorristaAddress];
+            uint contribution = ahorrista.payed;
+            uint debt = ahorrista.debt;
+            uint proportionalReturnsPercentage = config.actualSavings / contribution;
+            uint winnings = proportionalReturnsPercentage * config.actualSavings;
+            if(winnings > debt){
+                uint toReturn = winnings - debt;
+                ahorrista.ahorristaAddress.transfer(toReturn);
+            }
+        }
+        for (uint i=0; i < auditoresLength; i++) {
+            address ahorristaAddress = auditores[i];
+            Ahorrista memory ahorrista = mappings.ahorristaStructs[ahorristaAddress];
+            uint contribution = ahorrista.payed;
+            uint debt = ahorrista.debt;
+            uint proportionalReturnsPercentage = config.actualSavings / contribution;
+            uint winnings = proportionalReturnsPercentage * config.actualSavings;
+            if(winnings > debt){
+                uint toReturn = winnings - debt;
+                ahorrista.ahorristaAddress.transfer(toReturn);
+            }
+        }
     }
 }

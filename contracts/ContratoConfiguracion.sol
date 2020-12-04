@@ -45,6 +45,7 @@ contract ContratoConfiguracion {
         uint  recargoMoroso;
         uint  percentageForRetirements;
         uint256  timeToReportLife;
+        uint commissionPercentage;
     }
 
     struct ConfigIn {
@@ -60,6 +61,8 @@ contract ContratoConfiguracion {
         uint _recargoMoroso; 
         uint _percentageForRetirements; 
         uint _timeToReportLife;
+        uint _commissionPercentage;
+        address payable _companyToPay;
     }
     struct Loan {
         address saver;
@@ -137,6 +140,7 @@ contract ContratoConfiguracion {
 
     address payable public admin;
     address payable public savingAccount;
+    address payable public companyToPay;
 
     bool  isGestorVotingPeriod;
     bool  isGestorPostulationPeriod;
@@ -169,7 +173,8 @@ contract ContratoConfiguracion {
                 maxLoan:200,
                 recargoMoroso:50,
                 percentageForRetirements:15,
-                timeToReportLife:1000 * 60 * 60 * 24 * 7
+                timeToReportLife:1000 * 60 * 60 * 24 * 7,
+                commissionPercentage: 10
             }
         );
        
@@ -241,7 +246,10 @@ contract ContratoConfiguracion {
         require(closeContractVoters.length == config.activeSavers, "Not all active savers voted");
         _;
     }
-
+    modifier enoughSavers() {
+        require(config.cantAuditores >= config.cantGestores / 2 && config.cantGestores >= config.cantAhorristas / 3  , "Not all active savers voted");
+        _;
+    }
 
     function configureContract( ConfigIn memory configVarsIn ) public onlyAdmin {
         
@@ -261,10 +269,11 @@ contract ContratoConfiguracion {
         config.recargoMoroso = configVarsIn._recargoMoroso;
         config.percentageForRetirements = configVarsIn._percentageForRetirements;
         config.timeToReportLife = configVarsIn._timeToReportLife;
+        config.commissionPercentage = configVarsIn._commissionPercentage;
+        companyToPay = configVarsIn._companyToPay;
     }
 
-    function enableContract( ) public onlyAdmin {
-        //TODO: verificar condiciones -> si hay suficientes ahorristas, gestores y auditores.
+    function enableContract( ) public onlyAdmin enoughSavers {
         config.accountEnabled = true;
     }
 

@@ -263,6 +263,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "companyToPay",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -325,6 +338,16 @@
             "internalType": "uint256",
             "name": "_timeToReportLife",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_commissionPercentage",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_companyToPay",
+            "type": "address"
           }
         ],
         "internalType": "struct ContratoConfiguracion.ConfigIn",

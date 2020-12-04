@@ -47,7 +47,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     }
 
     function addAhorristaByDeposit(AhorristaIn memory ahorristaIn, uint deposit) public  {
-        //TODO: Código para hacer la transferencia y depósito
+        //uint256 amount = msg.value; //Testear así
         if(deposit >= config.minimumDeposit){
             ahorristas.push(ahorristaIn._address);
 
@@ -71,22 +71,23 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                     isRetired: false
                 }
             );
+
+            savingAccount.transfer(deposit);
+            config.actualSavings+=deposit;
         }
        
          
     }
 
     function approveSaver(address payable saverToApproveAddress) public  onlyAudit  {
-        //TODO 
-         mappings.ahorristaStructs[saverToApproveAddress].isApproved = true;
+        mappings.ahorristaStructs[saverToApproveAddress].isApproved = true;
         if( mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove >= config.minimumContribution){
              mappings.ahorristaStructs[saverToApproveAddress].isActivated = true;
             config.activeSavers++;
         }
-        saverToApproveAddress.transfer( mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove);
-        //TODO: Check si esto funciona y transfiere al contrato, o hay que hacer variable balance etc.
+        savingAccount.transfer( mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove);
         config.actualSavings+=  mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove;
-         mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove = 0;
+        mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove = 0;
 
     }
 
@@ -106,7 +107,6 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     }
 
     function askForLoan(uint amount) public  isSaverActive  {
-        //TODO: Transfer logic & emit event
         if( amount <= config.maxLoan){
             mappings.loans[msg.sender] = Loan(
                 {
@@ -119,6 +119,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             mappings.ahorristaStructs[msg.sender].debt = amount;
             mappings.ahorristaStructs[msg.sender].isActivated = false;
             msg.sender.transfer(amount);
+            config.actualSavings-=amount;
             emit LoanEvent(msg.sender, amount);
         }
     }
