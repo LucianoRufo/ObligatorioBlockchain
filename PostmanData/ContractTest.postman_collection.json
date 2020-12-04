@@ -1,0 +1,691 @@
+{
+	"info": {
+		"_postman_id": "345de8c4-d514-4d11-a87a-7bfb79f38462",
+		"name": "ContractTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Compile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/compile",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"compile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deploy",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/deploy",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"deploy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "configureContract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"_savingAccount\": \"{{savingAccount}}\"\r\n    \"_objective\": \"{{objective}}\";\r\n    \"_savingsObjective\": \"{{savingObjective}}\"; \r\n    \"_minimumDeposit\": \"{{minimunDeposit}}\" ;\r\n    \"_minimumContribution\" : \"{{minimumContribution}}\"; \r\n    \"_isSavingVisible\" : false; \r\n    \"_bonusPercentage\" : \"{{bonusPercentage}}\"; \r\n    \"_maxCantAhorristas\" : \"{{maxCantAhorristas}}\";\r\n    \"_maxLoan\" : \"{{maxLoan}}\";\r\n    \"_recargoMoroso\" : \"{{recargoMoroso}}\"; \r\n    \"_percentageForRetirements\" : \"{{percentageForRetirements}}\"; \r\n    \"_timeToReportLife\" : \"{{timeToReportLife}}\";\r\n    \"_commissionPercentage\" : \"{{commissionPercentage}}\";\r\n    \"_companyToPay\" : \"{{companyToPay}}\";\r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/configureContract",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"configureContract"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable Contract",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/enableContract",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"enableContract"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaAdmin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByDeposit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaByDeposit",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaByDeposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "approveSaver",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/approveSaver",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"approveSaver"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "askBalancePermission",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/askBalancePermission",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"askBalancePermission"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "giveBalancePermission",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/giveBalancePermission",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"giveBalancePermission"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeBalancePermission",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/removeBalancePermission",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"removeBalancePermission"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "askForLoan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/askForLoan",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"askForLoan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "retireFromFund",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/retireFromFund",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"retireFromFund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reportSaverDeath",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/reportSaverDeath",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"reportSaverDeath"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "revokeDeath",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/revokeDeath",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"revokeDeath"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "closeDeadSaverAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/closeDeadSaverAccount",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"closeDeadSaverAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "makeContribution",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/makeContribution",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"makeContribution"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payDebt",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/payDebt",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"payDebt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "startGestorPostulation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/startGestorPostulation",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"startGestorPostulation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "startGestorVoting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/startGestorVoting",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"startGestorVoting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "finishGestorVoting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/finishGestorVoting",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"finishGestorVoting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postulateFor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/postulateFor",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"postulateFor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "voteGestor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/voteGestor",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"voteGestor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "voteAuditor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/voteAuditor",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"voteAuditor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "startGestorPostulation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/startGestorPostulation",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"startGestorPostulation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addSubObjective",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addSubObjective",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addSubObjective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "startVotingPeriod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/startVotingPeriod",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"startVotingPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "voteSubObjective",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/voteSubObjective",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"voteSubObjective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addClosingVote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addClosingVote",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addClosingVote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "closeVotingPeriod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/closeVotingPeriod",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"closeVotingPeriod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "executeNextSubObjective",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/executeNextSubObjective",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"executeNextSubObjective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "voteToCloseContract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/voteToCloseContract",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"voteToCloseContract"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "closeContract",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/closeContract",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"closeContract"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

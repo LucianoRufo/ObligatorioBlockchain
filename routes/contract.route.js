@@ -23,7 +23,7 @@ router.get("/deploy", function (req, res) {
   }
 });
 
-router.get("/configureContract", async function (req, res) {
+router.post("/configureContract", async function (req, res) {
   try {
     const contract = contractService.getContract();
     //Add variables
@@ -55,7 +55,7 @@ router.get("/enableContract", async function (req, res) {
   }
 });
 
-router.get("/addAhorristaAdmin", async function (req, res) {
+router.post("/addAhorristaAdmin", async function (req, res) {
   try {
     const contract = contractService.getContract();
     let result = await contract.methods
