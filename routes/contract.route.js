@@ -59,11 +59,13 @@ router.get("/enableContract", async function (req, res) {
 router.post("/addAhorristaAdmin", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    console.log("body", req.body);
+
     let result = await contract.methods
       .addAhorristaAdmin(req.body)
       .call()
       .then(function (result) {
-        res.status(200).send("Balance:" + result);
+        res.status(200).send("Succesfully added a saver");
       });
   } catch (error) {
     console.log(error);

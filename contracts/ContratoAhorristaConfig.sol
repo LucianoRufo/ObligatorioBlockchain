@@ -23,7 +23,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     function addAhorristaAdmin(AhorristaIn memory ahorristaIn) public onlyAdmin {
         ahorristas.push(ahorristaIn._address);
 
-         mappings.ahorristaStructs[ahorristaIn._address] = Ahorrista(
+        mappings.ahorristaStructs[ahorristaIn._address] = Ahorrista(
             {
                 ci: ahorristaIn._ci,
                 name: ahorristaIn._name,
@@ -46,24 +46,24 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
          
     }
 
-    function addAhorristaByDeposit(AhorristaIn memory ahorristaIn, uint deposit) public  {
+    function addAhorristaByDeposit() public payable {
         //uint256 amount = msg.value; //Testear así
-        if(deposit >= config.minimumDeposit){
-            ahorristas.push(ahorristaIn._address);
+        if(msg.value >= config.minimumDeposit){
+            ahorristas.push(msg.sender);
 
-             mappings.ahorristaStructs[ahorristaIn._address] = Ahorrista(
+            mappings.ahorristaStructs[msg.sender] = Ahorrista(
                 {
-                    ci: ahorristaIn._ci,
-                    name: ahorristaIn._name,
-                    lastName: ahorristaIn._lastname,
+                    ci: "",
+                    name: "",
+                    lastName: "",
                     addedDate: now,
-                    ahorristaAddress: ahorristaIn._address,
-                    beneficiaryAddress: ahorristaIn._beneficiaryAddress,
-                    isGestor: ahorristaIn._isGestor,
-                    isAuditor: ahorristaIn._isAuditor,
+                    ahorristaAddress: msg.sender, //ahorristaIn._address, //Changed for msg sender
+                    beneficiaryAddress: address(0),
+                    isGestor: false,
+                    isAuditor: false,
                     debt: 0, //TODO: Add variable minimum
                     payed: 0,
-                    toDepositOnApprove: deposit, //TODO: El deposito minimo sumarlo aquí
+                    toDepositOnApprove: msg.value, //deposit //Changed for value, //TODO: El deposito minimo sumarlo aquí
                     isApproved: false,
                     isActivated: false,
                     canSeeBalance: false,
@@ -72,23 +72,41 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                 }
             );
 
-            savingAccount.transfer(deposit);
-            config.actualSavings+=deposit;
+            //savingAccount.transfer(msg.value);
+            //config.actualSavings+=msg.value;
         }
        
          
     }
 
-    function approveSaver(address payable saverToApproveAddress) public  onlyAudit  {
+    //Esto se ejecuta cuando alguien paga al contrato.
+
+    receive() external payable {
+        if(mappings.ahorristaStructs[msg.sender].ahorristaAddress != address(0) ){
+            //Todo:Normal deposit code
+        }else {
+            addAhorristaByDeposit();    
+        }
+    }
+
+    function approveSaver(address payable saverToApproveAddress, AhorristaIn memory ahorristaIn) public  onlyAudit  {
+        //Set the now known data of the saver
+        mappings.ahorristaStructs[saverToApproveAddress].ci = ahorristaIn._ci; 
+        mappings.ahorristaStructs[saverToApproveAddress].name = ahorristaIn._name; 
+        mappings.ahorristaStructs[saverToApproveAddress].lastName = ahorristaIn._lastname; 
+        mappings.ahorristaStructs[saverToApproveAddress].beneficiaryAddress = ahorristaIn._beneficiaryAddress; 
+        mappings.ahorristaStructs[saverToApproveAddress].isGestor = ahorristaIn._isGestor; 
+        mappings.ahorristaStructs[saverToApproveAddress].isAuditor = ahorristaIn._isAuditor; 
+        //Approve him
         mappings.ahorristaStructs[saverToApproveAddress].isApproved = true;
         if( mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove >= config.minimumContribution){
-             mappings.ahorristaStructs[saverToApproveAddress].isActivated = true;
+            mappings.ahorristaStructs[saverToApproveAddress].isActivated = true;
             config.activeSavers++;
         }
-        savingAccount.transfer( mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove);
-        config.actualSavings+=  mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove;
+        //Approve his initial transfer to the savings account.
+        savingAccount.transfer(mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove);
+        config.actualSavings+=mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove;
         mappings.ahorristaStructs[saverToApproveAddress].toDepositOnApprove = 0;
-
     }
 
     function askBalancePermission() public  notAuditNorAdmin  {
@@ -171,7 +189,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         }
     }
  
-    function makeContribution( uint amount, bool payRecharge) public isContractEnabled   {
+    function makeContribution( uint amount, bool payRecharge) public isContractEnabled payable {
         if( amount > config.minimumDeposit ){
             if(now - mappings.ahorristaStructs[msg.sender].lastPaymentDate < 1000 * 60 * 60 * 24 * 60 ){
                 if(payRecharge){
@@ -196,7 +214,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         }
     }
 
-    function payDebt(uint amount ) public    {
+    function payDebt(uint amount ) public payable   {
         mappings.ahorristaStructs[msg.sender].debt = mappings.ahorristaStructs[msg.sender].debt - amount;
         mappings.ahorristaStructs[msg.sender].lastPaymentDate = now;
         mappings.loans[msg.sender].payments+= amount;

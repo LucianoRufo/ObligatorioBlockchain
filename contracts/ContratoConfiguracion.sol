@@ -128,7 +128,7 @@ contract ContratoConfiguracion {
     ConfigVars  config;
     Mappings  mappings;
 
-    address[] ahorristas;
+    address[]  ahorristas;
     address[] gestores;
     address[] auditores;
     address[] gestorVotersPerPeriod;
@@ -177,7 +177,6 @@ contract ContratoConfiguracion {
                 commissionPercentage: 10
             }
         );
-       
     }
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only the admin can call this function.");
