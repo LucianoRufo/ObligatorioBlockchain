@@ -28,9 +28,15 @@ router.post("/configureContract", async function (req, res) {
     const contract = contractService.getContract(contractName);
     //Add variables
     console.log("body", req.body);
+    const accounts = await web3.eth.getAccounts();
+
     let result = await contract.methods
       .configureContract(req.body)
-      .call()
+      .send({
+        gas: "6721975",
+        from: accounts[0],
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Contract configured successfully. ");
       });
@@ -43,10 +49,15 @@ router.post("/configureContract", async function (req, res) {
 router.get("/enableContract", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const accounts = await web3.eth.getAccounts();
 
     let result = await contract.methods
       .enableContract()
-      .call()
+      .send({
+        gas: "6721975",
+        from: accounts[0],
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Enabled contract successfully.");
       });
@@ -61,9 +72,14 @@ router.post("/addAhorristaAdmin", async function (req, res) {
     const contract = contractService.getContract(contractName);
     console.log("body", req.body);
 
+    const accounts = await web3.eth.getAccounts();
     let result = await contract.methods
       .addAhorristaAdmin(req.body)
-      .call()
+      .send({
+        gas: "6721975",
+        from: accounts[0],
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Succesfully added a saver");
       });
@@ -73,7 +89,7 @@ router.post("/addAhorristaAdmin", async function (req, res) {
   }
 });
 
-router.get("/addAhorristaByDeposit", async function (req, res) {
+router.post("/addAhorristaByDeposit", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
 

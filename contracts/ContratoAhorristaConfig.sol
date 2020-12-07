@@ -22,7 +22,6 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
      
     function addAhorristaAdmin(AhorristaIn memory ahorristaIn) public onlyAdmin {
         ahorristas.push(ahorristaIn._address);
-
         mappings.ahorristaStructs[ahorristaIn._address] = Ahorrista(
             {
                 ci: ahorristaIn._ci,

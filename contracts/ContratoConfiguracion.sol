@@ -128,7 +128,7 @@ contract ContratoConfiguracion {
     ConfigVars  config;
     Mappings  mappings;
 
-    address[]  ahorristas;
+    address[] ahorristas;
     address[] gestores;
     address[] auditores;
     address[] gestorVotersPerPeriod;
@@ -246,7 +246,8 @@ contract ContratoConfiguracion {
         _;
     }
     modifier enoughSavers() {
-        require(config.cantAuditores >= config.cantGestores / 2 && config.cantGestores >= config.cantAhorristas / 3  , "Not all active savers voted");
+        require(config.cantAuditores >= config.cantGestores / 2 && config.cantGestores >= config.cantAhorristas / 3  
+        && config.cantAuditores > 0 && config.cantGestores > 0 && config.cantAhorristas > 0, "Not all active savers voted");
         _;
     }
 

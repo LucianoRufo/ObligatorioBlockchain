@@ -105,58 +105,10 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "components": [
-          {
-            "internalType": "string",
-            "name": "_ci",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "_name",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "_lastname",
-            "type": "string"
-          },
-          {
-            "internalType": "address payable",
-            "name": "_address",
-            "type": "address"
-          },
-          {
-            "internalType": "address payable",
-            "name": "_beneficiaryAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "bool",
-            "name": "_isGestor",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "_isAuditor",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct ContratoConfiguracion.AhorristaIn",
-        "name": "ahorristaIn",
-        "type": "tuple"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deposit",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "addAhorristaByDeposit",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -208,6 +160,48 @@
         "internalType": "address payable",
         "name": "saverToApproveAddress",
         "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "_ci",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "_lastname",
+            "type": "string"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_address",
+            "type": "address"
+          },
+          {
+            "internalType": "address payable",
+            "name": "_beneficiaryAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "_isGestor",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "_isAuditor",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct ContratoConfiguracion.AhorristaIn",
+        "name": "ahorristaIn",
+        "type": "tuple"
       }
     ],
     "name": "approveSaver",
@@ -422,7 +416,7 @@
     ],
     "name": "makeContribution",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -435,7 +429,7 @@
     ],
     "name": "payDebt",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -581,5 +575,9 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   }
 ]

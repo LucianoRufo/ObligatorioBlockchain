@@ -15,23 +15,24 @@ const methods = {
     const sourceContent = {};
     sourceContent[contractFileName] = {
       content: fs.readFileSync(contractPath, "utf8"),
-    };  
+    };
     const compilerInput = {
       language: "Solidity",
       sources: sourceContent,
       settings: { outputSelection: { "*": { "*": ["abi", "evm.bytecode"] } } },
     };
 
-
     const compliedContract = JSON.parse(
       solc.compile(JSON.stringify(compilerInput), { import: getImports })
     );
-    if (!compliedContract) {  
-      console.error("ERRORS\n","NO OUTPUT");  
+    if (!compliedContract) {
+      console.error("ERRORS\n", "NO OUTPUT");
     } else if (compliedContract.errors) {
       // something went wrong.
       console.error("ERRORS <<<<<<<<<<<<<<<<<<<<<<<<\n");
-      compliedContract.errors.map(error => console.log(error.formattedMessage));
+      compliedContract.errors.map((error) =>
+        console.log(error.formattedMessage)
+      );
     }
 
     const contractName = contractFileName.replace(".sol", "");
@@ -80,7 +81,7 @@ const methods = {
           //arguments: [accounts[1], accounts[2]]
         })
         .send({
-          gas: "3000000",
+          gas: "6721975",
           from: accounts[0],
           value: 0, // web3.utils.toWei('10', 'ether')
         });
@@ -111,7 +112,6 @@ module.exports = { ...methods };
 
 //Agregar más casos de necesitar más herencias.
 function getImports(dependency) {
-
   switch (dependency) {
     case "ContratoConfiguracion.sol":
       return {
@@ -130,7 +130,11 @@ function getImports(dependency) {
     case "ContratoAhorristaConfig.sol":
       return {
         contents: fs.readFileSync(
-          path.resolve(process.cwd(), "contracts", "ContratoAhorristaConfig.sol"),
+          path.resolve(
+            process.cwd(),
+            "contracts",
+            "ContratoAhorristaConfig.sol"
+          ),
           "utf8"
         ),
       };
