@@ -15,7 +15,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/compile",
@@ -39,7 +42,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/deploy",
@@ -60,7 +66,12 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"_savingAccount\": \"{{savingAccount}}\"\r\n    \"_objective\": \"{{objective}}\";\r\n    \"_savingsObjective\": \"{{savingObjective}}\"; \r\n    \"_minimumDeposit\": \"{{minimunDeposit}}\" ;\r\n    \"_minimumContribution\" : \"{{minimumContribution}}\"; \r\n    \"_isSavingVisible\" : false; \r\n    \"_bonusPercentage\" : \"{{bonusPercentage}}\"; \r\n    \"_maxCantAhorristas\" : \"{{maxCantAhorristas}}\";\r\n    \"_maxLoan\" : \"{{maxLoan}}\";\r\n    \"_recargoMoroso\" : \"{{recargoMoroso}}\"; \r\n    \"_percentageForRetirements\" : \"{{percentageForRetirements}}\"; \r\n    \"_timeToReportLife\" : \"{{timeToReportLife}}\";\r\n    \"_commissionPercentage\" : \"{{commissionPercentage}}\";\r\n    \"_companyToPay\" : \"{{companyToPay}}\";\r\n}"
+					"raw": "{\r\n    \"_savingAccount\": {{savingAccount}},\r\n    \"_objective\": {{objective}},\r\n    \"_savingsObjective\": {{savingObjective}},\r\n    \"_minimumDeposit\": {{minimunDeposit}},\r\n    \"_minimumContribution\" : {{minimumContribution}},\r\n    \"_isSavingVisible\" : false,\r\n    \"_bonusPercentage\" : {{bonusPercentage}},\r\n    \"_maxCantAhorristas\" : {{maxCantAhorristas}},\r\n    \"_maxLoan\" : {{maxLoan}},\r\n    \"_recargoMoroso\" : {{recargoMoroso}},\r\n    \"_percentageForRetirements\" : {{percentageForRetirements}},\r\n    \"_timeToReportLife\" : {{timeToReportLife}},\r\n    \"_commissionPercentage\" : {{commissionPercentage}},\r\n    \"_companyToPay\" : {{companyToPay}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/configureContract",
@@ -84,7 +95,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/enableContract",
@@ -105,7 +119,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/addAhorristaAdmin",
@@ -126,7 +143,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/addAhorristaByDeposit",
@@ -147,7 +167,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/approveSaver",
@@ -168,7 +191,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/askBalancePermission",
@@ -189,7 +215,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/giveBalancePermission",
@@ -210,7 +239,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/removeBalancePermission",
@@ -231,7 +263,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/askForLoan",
@@ -252,7 +287,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/retireFromFund",
@@ -273,7 +311,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/reportSaverDeath",
@@ -294,7 +335,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/revokeDeath",
@@ -315,7 +359,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/closeDeadSaverAccount",
@@ -336,7 +383,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/makeContribution",
@@ -357,7 +407,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/payDebt",
@@ -378,7 +431,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/startGestorPostulation",
@@ -399,7 +455,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/startGestorVoting",
@@ -420,7 +479,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/finishGestorVoting",
@@ -441,7 +503,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/postulateFor",
@@ -462,7 +527,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/voteGestor",
@@ -483,7 +551,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/voteAuditor",
@@ -504,7 +575,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/startGestorPostulation",
@@ -525,7 +599,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/addSubObjective",
@@ -546,7 +623,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/startVotingPeriod",
@@ -567,7 +647,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/voteSubObjective",
@@ -588,7 +671,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/addClosingVote",
@@ -609,7 +695,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/closeVotingPeriod",
@@ -630,7 +719,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/executeNextSubObjective",
@@ -651,7 +743,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/voteToCloseContract",
@@ -672,7 +767,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}"
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "{{baseUrl}}/closeContract",

@@ -1,6 +1,8 @@
 const express = require("express");
 const Web3 = require("web3");
 
+var bodyParser = require("body-parser");
+
 //Para usar wallet provider
 /*
 const HDWalletProvider = require("truffle-hdwallet-provider");
@@ -10,6 +12,8 @@ const yourAccessPoint = "ENTER YOUR ROPSTEN ACCESS POINT HERE";
 
 const port = process.env.port || 3000;
 const app = express();
+
+app.use(bodyParser.json());
 
 app.get("/", function (req, res) {
   res.send("Hello world");
