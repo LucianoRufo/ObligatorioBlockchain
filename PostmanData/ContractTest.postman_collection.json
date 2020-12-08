@@ -86,42 +86,17 @@
 			"response": []
 		},
 		{
-			"name": "Enable Contract",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
-					"options": {
-						"raw": {}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/enableContract",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"enableContract"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "addAhorristaAdmin",
+			"name": "addAhorristaByAdmin 1",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"_ci\": {{ci1}},\r\n    \"_name\": {{name1}},\r\n    \"_lastname\": {{lastname1}},\r\n    \"_address\": {{address1}},\r\n    \"_beneficiaryAddress\" : {{beneficiary1}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": true \r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -155,6 +130,33 @@
 					],
 					"path": [
 						"addAhorristaByDeposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable Contract",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/enableContract",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"enableContract"
 					]
 				}
 			},
