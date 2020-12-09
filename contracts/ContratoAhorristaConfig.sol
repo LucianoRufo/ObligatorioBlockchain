@@ -82,7 +82,13 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     receive() external payable {
         if(mappings.ahorristaStructs[msg.sender].ahorristaAddress != address(0) ){
-            //Todo:Normal deposit code
+            savingAccount.transfer(msg.value);
+            mappings.ahorristaStructs[msg.sender].payed+=msg.value;
+            if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated ){
+                mappings.ahorristaStructs[msg.sender].isActivated = true;
+                mappings.ahorristaStructs[msg.sender].lastPaymentDate = now; 
+                config.activeSavers++;
+            }
         }else {
             addAhorristaByDeposit();    
         }
@@ -195,7 +201,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                     amount+= config.recargoMoroso;
                     savingAccount.transfer(amount);
                     mappings.ahorristaStructs[msg.sender].payed+=amount;
-                    if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution){
+                    if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated){
                         mappings.ahorristaStructs[msg.sender].isActivated = true;
                         mappings.ahorristaStructs[msg.sender].lastPaymentDate = now; 
                         config.activeSavers++;
@@ -204,7 +210,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             }else {
                 savingAccount.transfer(amount);
                 mappings.ahorristaStructs[msg.sender].payed+=amount;
-                if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution){
+                if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated){
                     mappings.ahorristaStructs[msg.sender].isActivated = true;
                     mappings.ahorristaStructs[msg.sender].lastPaymentDate = now; 
                     config.activeSavers++;
