@@ -237,7 +237,7 @@ contract ContratoConfiguracion {
     }
 
     modifier hasNoDebts() {
-        require(mappings.ahorristaStructs[msg.sender].debt > 0, "Only enabled account can see the balance");
+        require(mappings.ahorristaStructs[msg.sender].debt <= 0, "Only not indebted accounts can do that.");
         _;
     }
 
