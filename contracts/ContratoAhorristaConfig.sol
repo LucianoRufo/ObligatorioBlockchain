@@ -132,7 +132,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
     }
 
     function removeBalancePermission(address saverToApprove) public  auditOrAdmin  {
-        mappings.ahorristaStructs[saverToApprove].canSeeBalance = true;
+        mappings.ahorristaStructs[saverToApprove].canSeeBalance = false;
     }
 
     function askForLoan(uint amount) public  isSaverActive  {
