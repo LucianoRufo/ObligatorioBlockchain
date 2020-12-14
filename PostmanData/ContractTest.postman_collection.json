@@ -66,7 +66,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"_savingAccount\": {{savingAccount}},\r\n    \"_objective\": {{objective}},\r\n    \"_savingsObjective\": {{savingObjective}},\r\n    \"_minimumDeposit\": {{minimunDeposit}},\r\n    \"_minimumContribution\" : {{minimumContribution}},\r\n    \"_isSavingVisible\" : false,\r\n    \"_bonusPercentage\" : {{bonusPercentage}},\r\n    \"_maxCantAhorristas\" : {{maxCantAhorristas}},\r\n    \"_maxLoan\" : {{maxLoan}},\r\n    \"_recargoMoroso\" : {{recargoMoroso}},\r\n    \"_percentageForRetirements\" : {{percentageForRetirements}},\r\n    \"_timeToReportLife\" : {{timeToReportLife}},\r\n    \"_commissionPercentage\" : {{commissionPercentage}},\r\n    \"_companyToPay\" : {{companyToPay}}\r\n}",
+					"raw": "{\r\n    \"sender\": {{adminAddress}},\r\n    \"data\" : {\r\n        \"_savingAccount\": {{savingAccount}},\r\n        \"_objective\": {{objective}},\r\n        \"_savingsObjective\": {{savingObjective}},\r\n        \"_minimumDeposit\": {{minimunDeposit}},\r\n        \"_minimumContribution\" : {{minimumContribution}},\r\n        \"_isSavingVisible\" : false,\r\n        \"_bonusPercentage\" : {{bonusPercentage}},\r\n        \"_maxCantAhorristas\" : {{maxCantAhorristas}},\r\n        \"_maxLoan\" : {{maxLoan}},\r\n        \"_recargoMoroso\" : {{recargoMoroso}},\r\n        \"_percentageForRetirements\" : {{percentageForRetirements}},\r\n        \"_timeToReportLife\" : {{timeToReportLife}},\r\n        \"_commissionPercentage\" : {{commissionPercentage}},\r\n        \"_companyToPay\" : {{companyToPay}}\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,7 +92,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"_ci\": {{ci1}},\r\n    \"_name\": {{name1}},\r\n    \"_lastname\": {{lastname1}},\r\n    \"_address\": {{address1}},\r\n    \"_beneficiaryAddress\" : {{beneficiary1}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": true \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n         \"_ci\": {{ci1}},\r\n        \"_name\": {{name1}},\r\n        \"_lastname\": {{lastname1}},\r\n        \"_address\": {{address1}},\r\n        \"_beneficiaryAddress\" : {{beneficiary1}},\r\n        \"_isGestor\" : false,\r\n        \"_isAuditor\": true \r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -112,24 +112,208 @@
 			"response": []
 		},
 		{
-			"name": "addAhorristaByDeposit",
+			"name": "addAhorristaByAdmin 2",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n        \"_ci\": \"12345\",\r\n        \"_name\": \"Test2\",\r\n        \"_lastname\": \"Test2\",\r\n        \"_address\": {{address2}},\r\n        \"_beneficiaryAddress\" : {{beneficiary2}},\r\n        \"_isGestor\" : true,\r\n        \"_isAuditor\": false \r\n    }\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/addAhorristaByDeposit",
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"addAhorristaByDeposit"
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 3",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n        \"_ci\": \"12345\",\r\n        \"_name\": \"Test3\",\r\n        \"_lastname\": \"Test3\",\r\n        \"_address\": {{address3}},\r\n        \"_beneficiaryAddress\" : {{beneficiary3}},\r\n        \"_isGestor\" : true,\r\n        \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 4",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n    \"_ci\": \"12345\",\r\n    \"_name\": \"Test4\",\r\n    \"_lastname\": \"Test4\",\r\n    \"_address\": {{address4}},\r\n    \"_beneficiaryAddress\" : {{beneficiary4}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 5",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n    \"_ci\": \"12345\",\r\n    \"_name\": \"Test5\",\r\n    \"_lastname\": \"Test5\",\r\n    \"_address\": {{address5}},\r\n    \"_beneficiaryAddress\" : {{beneficiary5}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 6",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n    \"_ci\": \"12345\",\r\n    \"_name\": \"Test6\",\r\n    \"_lastname\": \"Test6\",\r\n    \"_address\": {{address6}},\r\n    \"_beneficiaryAddress\" : {{beneficiary6}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 7",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n    \"_ci\": \"12345\",\r\n    \"_name\": \"Test7\",\r\n    \"_lastname\": \"Test7\",\r\n    \"_address\": {{address7}},\r\n    \"_beneficiaryAddress\" : {{beneficiary7}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 8",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n    \"_ci\": \"12345\",\r\n    \"_name\": \"Test8\",\r\n    \"_lastname\": \"Test8\",\r\n    \"_address\": {{address8}},\r\n    \"_beneficiaryAddress\" : {{beneficiary8}},\r\n    \"_isGestor\" : false,\r\n    \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAhorristaByAdmin 9",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"data\": {\r\n        \"_ci\": \"12345\",\r\n        \"_name\": \"Test9\",\r\n        \"_lastname\": \"Test9\",\r\n        \"_address\": {{address9}},\r\n        \"_beneficiaryAddress\" : {{beneficiary9}},\r\n        \"_isGestor\" : false,\r\n        \"_isAuditor\": false \r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addAhorristaAdmin",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addAhorristaAdmin"
 					]
 				}
 			},
@@ -145,9 +329,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -169,9 +355,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"addressToApprove\": {{address10}},\r\n    \"data\":{\r\n        \"_ci\": \"12345\",\r\n        \"_name\": \"Test10\",\r\n        \"_lastname\": \"Test10\",\r\n        \"_address\": {{address10}},\r\n        \"_beneficiaryAddress\" : {{beneficiary10}},\r\n        \"_isGestor\" : false,\r\n        \"_isAuditor\": false \r\n    }\r\n\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -193,9 +381,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address9}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -217,9 +407,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"saverToApprove\" :{{address9}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -241,9 +433,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"saverToRemove\" :{{address9}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -265,9 +459,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\": {{address9}},\r\n    \"amount\": 150\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -289,9 +485,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address9}},\r\n    \"withoutWithdrawal\": true\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -313,9 +511,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\": {{address2}},\r\n    \"reportedAddress\": {{address9}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -337,9 +537,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\": {{address9}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -355,39 +557,17 @@
 			"response": []
 		},
 		{
-			"name": "closeDeadSaverAccount",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
-					"options": {
-						"raw": {}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/closeDeadSaverAccount",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"closeDeadSaverAccount"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "makeContribution",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\": {{address2}},\r\n    \"contractAddress\": {{contractAddress}},\r\n    \"amount\" : 1,\r\n    \"payRecharge\": false\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -409,9 +589,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\": {{address9}},\r\n    \"contractAddress\": {{contractAddress}},\r\n    \"amount\": 1\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -433,9 +615,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -451,63 +635,17 @@
 			"response": []
 		},
 		{
-			"name": "startGestorVoting",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
-					"options": {
-						"raw": {}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/startGestorVoting",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"startGestorVoting"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "finishGestorVoting",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
-					"options": {
-						"raw": {}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/finishGestorVoting",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"finishGestorVoting"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "postulateFor",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\": {{address9}},\r\n    \"forGestor\": true,\r\n    \"forAudit\": false\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -523,15 +661,43 @@
 			"response": []
 		},
 		{
+			"name": "startGestorVoting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/startGestorVoting",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"startGestorVoting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "voteGestor",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address2}},\r\n    \"votedAddress\":{{address9}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -547,48 +713,26 @@
 			"response": []
 		},
 		{
-			"name": "voteAuditor",
+			"name": "finishGestorVoting",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/voteAuditor",
+					"raw": "{{baseUrl}}/finishGestorVoting",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"voteAuditor"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "startGestorPostulation",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
-					"options": {
-						"raw": {}
-					}
-				},
-				"url": {
-					"raw": "{{baseUrl}}/startGestorPostulation",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"startGestorPostulation"
+						"finishGestorVoting"
 					]
 				}
 			},
@@ -601,9 +745,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}},\r\n    \"description\":\"Sub objetivo test\",\r\n    \"total\": 150000,\r\n    \"address\":{{address10}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -625,9 +771,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -649,9 +797,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address9}},\r\n    \"subObjectiveId\": 0\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -673,9 +823,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address1}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -697,9 +849,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -721,9 +875,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address2}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -745,9 +901,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{address10}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
@@ -769,9 +927,11 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n}",
+					"raw": "{\r\n    \"sender\":{{adminAddress}}\r\n}",
 					"options": {
-						"raw": {}
+						"raw": {
+							"language": "json"
+						}
 					}
 				},
 				"url": {
