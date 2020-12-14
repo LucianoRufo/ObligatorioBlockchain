@@ -82,18 +82,6 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     receive() external payable {
         if(mappings.ahorristaStructs[msg.sender].ahorristaAddress != address(0) ){
-            //savingAccount.transfer(msg.value);
-            //mappings.ahorristaStructs[msg.sender].payed+=msg.value;
-            //mappings.ahorristaStructs[msg.sender].payed+=msg.value;
-            /*
-            Esto lo maneja makeContribution y paydebt, los datos del ahorrista
-                if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated ){
-                    mappings.ahorristaStructs[msg.sender].isActivated = true;
-                    mappings.ahorristaStructs[msg.sender].lastPaymentDate = now; 
-                    config.activeSavers++;
-                }
-            */
-            //Aqui solo sumo al balance
             config.actualSavings+=msg.value;
         }else {
             addAhorristaByDeposit();    
