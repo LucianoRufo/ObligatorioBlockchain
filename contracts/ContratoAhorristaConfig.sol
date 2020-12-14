@@ -82,13 +82,19 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
 
     receive() external payable {
         if(mappings.ahorristaStructs[msg.sender].ahorristaAddress != address(0) ){
-            savingAccount.transfer(msg.value);
-            mappings.ahorristaStructs[msg.sender].payed+=msg.value;
-            if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated ){
-                mappings.ahorristaStructs[msg.sender].isActivated = true;
-                mappings.ahorristaStructs[msg.sender].lastPaymentDate = now; 
-                config.activeSavers++;
-            }
+            //savingAccount.transfer(msg.value);
+            //mappings.ahorristaStructs[msg.sender].payed+=msg.value;
+            //mappings.ahorristaStructs[msg.sender].payed+=msg.value;
+            /*
+            Esto lo maneja makeContribution y paydebt, los datos del ahorrista
+                if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated ){
+                    mappings.ahorristaStructs[msg.sender].isActivated = true;
+                    mappings.ahorristaStructs[msg.sender].lastPaymentDate = now; 
+                    config.activeSavers++;
+                }
+            */
+            //Aqui solo sumo al balance
+            config.actualSavings+=msg.value;
         }else {
             addAhorristaByDeposit();    
         }
@@ -199,7 +205,8 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
             if(now - mappings.ahorristaStructs[msg.sender].lastPaymentDate < 1000 * 60 * 60 * 24 * 60 ){
                 if(payRecharge){
                     amount+= config.recargoMoroso;
-                    savingAccount.transfer(amount);
+                    //address(this).transfer(amount);
+                    //config.actualSavings+=amount;
                     mappings.ahorristaStructs[msg.sender].payed+=amount;
                     if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated){
                         mappings.ahorristaStructs[msg.sender].isActivated = true;
@@ -208,7 +215,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
                     }
                 }
             }else {
-                savingAccount.transfer(amount);
+                //address(this).transfer(amount);
                 mappings.ahorristaStructs[msg.sender].payed+=amount;
                 if (mappings.ahorristaStructs[msg.sender].payed > config.minimumContribution && !mappings.ahorristaStructs[msg.sender].isActivated){
                     mappings.ahorristaStructs[msg.sender].isActivated = true;
@@ -224,7 +231,8 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         mappings.ahorristaStructs[msg.sender].lastPaymentDate = now;
         mappings.loans[msg.sender].payments+= amount;
         mappings.loans[msg.sender].actualDebt-= amount;
-        savingAccount.transfer(amount);
+        //address(this).transfer(amount);
+        //config.actualSavings+=amount;
     }
 
 

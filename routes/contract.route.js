@@ -26,15 +26,12 @@ router.get("/deploy", function (req, res) {
 router.post("/configureContract", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
-    //Add variables
-    console.log("body", req.body);
-    const accounts = await web3.eth.getAccounts();
-
+    const sender = req.body.sender;
     let result = await contract.methods
-      .configureContract(req.body)
+      .configureContract(req.body.data)
       .send({
         gas: "6721975",
-        from: accounts[0],
+        from: sender,
         value: 0, // web3.utils.toWei('10', 'ether')
       })
       .then(function (result) {
@@ -49,13 +46,13 @@ router.post("/configureContract", async function (req, res) {
 router.get("/enableContract", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
-    const accounts = await web3.eth.getAccounts();
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .enableContract()
       .send({
         gas: "6721975",
-        from: accounts[0],
+        from: sender,
         value: 0, // web3.utils.toWei('10', 'ether')
       })
       .then(function (result) {
@@ -70,14 +67,13 @@ router.get("/enableContract", async function (req, res) {
 router.post("/addAhorristaAdmin", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
-    console.log("body", req.body);
+    const sender = req.body.sender;
 
-    const accounts = await web3.eth.getAccounts();
     let result = await contract.methods
-      .addAhorristaAdmin(req.body)
+      .addAhorristaAdmin(req.body.data)
       .send({
         gas: "6721975",
-        from: accounts[0],
+        from: sender,
         value: 0, // web3.utils.toWei('10', 'ether')
       })
       .then(function (result) {
@@ -92,10 +88,15 @@ router.post("/addAhorristaAdmin", async function (req, res) {
 router.post("/addAhorristaByDeposit", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .addAhorristaByDeposit(req.body)
-      .call()
+      .addAhorristaByDeposit(req.body.data)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Added saver with success!");
       });
@@ -105,13 +106,18 @@ router.post("/addAhorristaByDeposit", async function (req, res) {
   }
 });
 
-router.get("/approveSaver", async function (req, res) {
+router.post("/approveSaver", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .approveSaver(req.body)
-      .call()
+      .approveSaver(req.body.addressToApprove, req.body.data)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Approved saver!");
       });
@@ -121,13 +127,18 @@ router.get("/approveSaver", async function (req, res) {
   }
 });
 
-router.get("/askBalancePermission", async function (req, res) {
+router.post("/askBalancePermission", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .askBalancePermission()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Asked for balance permission!");
       });
@@ -137,13 +148,18 @@ router.get("/askBalancePermission", async function (req, res) {
   }
 });
 
-router.get("/giveBalancePermission", async function (req, res) {
+router.post("/giveBalancePermission", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .giveBalancePermission(req.body)
-      .call()
+      .giveBalancePermission(req.body.saverToApprove)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Approved permission to see balance!");
       });
@@ -153,13 +169,18 @@ router.get("/giveBalancePermission", async function (req, res) {
   }
 });
 
-router.get("/removeBalancePermission", async function (req, res) {
+router.post("/removeBalancePermission", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .removeBalancePermission(req.body)
-      .call()
+      .removeBalancePermission(req.body.saverToRemove)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Removed balance see permission!");
       });
@@ -169,13 +190,18 @@ router.get("/removeBalancePermission", async function (req, res) {
   }
 });
 
-router.get("/askForLoan", async function (req, res) {
+router.post("/askForLoan", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .askForLoan(req.body)
-      .call()
+      .askForLoan(req.body.amount)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Asked for loan!");
       });
@@ -185,13 +211,18 @@ router.get("/askForLoan", async function (req, res) {
   }
 });
 
-router.get("/retireFromFund", async function (req, res) {
+router.post("/retireFromFund", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .retireFromFund(req.body)
-      .call()
+      .retireFromFund(req.body.withoutWithdrawal)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Retired from fund successfully!");
       });
@@ -201,13 +232,18 @@ router.get("/retireFromFund", async function (req, res) {
   }
 });
 
-router.get("/reportSaverDeath", async function (req, res) {
+router.post("/reportSaverDeath", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .reportSaverDeath(req.body)
-      .call()
+      .reportSaverDeath(req.body.reportedAddress)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Report saver death!");
       });
@@ -217,13 +253,18 @@ router.get("/reportSaverDeath", async function (req, res) {
   }
 });
 
-router.get("/revokeDeath", async function (req, res) {
+router.post("/revokeDeath", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .revokeDeath()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Revoked death!");
       });
@@ -233,13 +274,18 @@ router.get("/revokeDeath", async function (req, res) {
   }
 });
 
-router.get("/closeDeadSaverAccount", async function (req, res) {
+router.post("/closeDeadSaverAccount", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .closeDeadSaverAccount(req.body)
-      .call()
+      .closeDeadSaverAccount(req.body.deadAddress)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Closed dead saver account!");
       });
@@ -249,13 +295,25 @@ router.get("/closeDeadSaverAccount", async function (req, res) {
   }
 });
 
-router.get("/makeContribution", async function (req, res) {
+router.post("/makeContribution", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
+    const receiver = req.body.contractAddress;
+
+    web3.eth.sendTransaction({
+      to: receiver,
+      from: sender,
+      value: web3.utils.toWei(req.body.amount.toString(), "ether"),
+    });
 
     let result = await contract.methods
-      .makeContribution(req.body)
-      .call()
+      .makeContribution(req.body.amount, req.body.payRecharge)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Made contribution successfully!");
       });
@@ -265,13 +323,25 @@ router.get("/makeContribution", async function (req, res) {
   }
 });
 
-router.get("/payDebt", async function (req, res) {
+router.post("/payDebt", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
+    const receiver = req.body.contractAddress;
+
+    web3.eth.sendTransaction({
+      to: receiver,
+      from: sender,
+      value: web3.utils.toWei(req.body.amount.toString(), "ether"),
+    });
 
     let result = await contract.methods
-      .payDebt(req.body)
-      .call()
+      .payDebt(req.body.amount)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Payed debt successfully!");
       });
@@ -281,13 +351,18 @@ router.get("/payDebt", async function (req, res) {
   }
 });
 
-router.get("/startGestorPostulation", async function (req, res) {
+router.post("/startGestorPostulation", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .startGestorPostulation()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Started gestor postulation process!");
       });
@@ -297,13 +372,18 @@ router.get("/startGestorPostulation", async function (req, res) {
   }
 });
 
-router.get("/startGestorVoting", async function (req, res) {
+router.post("/startGestorVoting", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .startGestorVoting()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Started gestor voting process!");
       });
@@ -313,13 +393,18 @@ router.get("/startGestorVoting", async function (req, res) {
   }
 });
 
-router.get("/finishGestorVoting", async function (req, res) {
+router.post("/finishGestorVoting", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .finishGestorVoting()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Finished gestor voting!");
       });
@@ -329,13 +414,18 @@ router.get("/finishGestorVoting", async function (req, res) {
   }
 });
 
-router.get("/postulateFor", async function (req, res) {
+router.post("/postulateFor", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .postulateFor()
-      .call()
+      .postulateFor(req.body.forGestor, req.body.forAudit)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Postulated successfully!");
       });
@@ -345,13 +435,18 @@ router.get("/postulateFor", async function (req, res) {
   }
 });
 
-router.get("/voteGestor", async function (req, res) {
+router.post("/voteGestor", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .voteGestor(req.body)
-      .call()
+      .voteGestor(req.body.votedAddress)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Voted Gestor!");
       });
@@ -361,13 +456,18 @@ router.get("/voteGestor", async function (req, res) {
   }
 });
 
-router.get("/voteAuditor", async function (req, res) {
+router.post("/voteAuditor", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .voteAuditor(req.body)
-      .call()
+      .voteAuditor(req.body.votedAddress)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
         res.status(200).send("Voted for auditor!");
       });
@@ -377,15 +477,20 @@ router.get("/voteAuditor", async function (req, res) {
   }
 });
 
-router.get("/startGestorPostulation", async function (req, res) {
+router.post("/addSubObjective", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .startGestorPostulation()
-      .call()
+      .addSubObjective(req.body.description, req.body.total, req.body.address)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Approved saver!");
+        res.status(200).send("Added sub objective!");
       });
   } catch (error) {
     console.log(error);
@@ -393,31 +498,20 @@ router.get("/startGestorPostulation", async function (req, res) {
   }
 });
 
-router.get("/addSubObjective", async function (req, res) {
+router.post("/startVotingPeriod", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
-
-    let result = await contract.methods
-      .addSubObjective(req.body)
-      .call()
-      .then(function (result) {
-        res.status(200).send("Voted for auditor!");
-      });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-});
-
-router.get("/startVotingPeriod", async function (req, res) {
-  try {
-    const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .startVotingPeriod()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Started sub objective voting!");
       });
   } catch (error) {
     console.log(error);
@@ -425,15 +519,20 @@ router.get("/startVotingPeriod", async function (req, res) {
   }
 });
 
-router.get("/voteSubObjective", async function (req, res) {
+router.post("/voteSubObjective", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
-      .voteSubObjective(req.body)
-      .call()
+      .voteSubObjective(req.body.subObjectiveId)
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Voted for subObjective!");
       });
   } catch (error) {
     console.log(error);
@@ -441,15 +540,20 @@ router.get("/voteSubObjective", async function (req, res) {
   }
 });
 
-router.get("/addClosingVote", async function (req, res) {
+router.post("/addClosingVote", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .addClosingVote()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Voted to close sub objective voting!");
       });
   } catch (error) {
     console.log(error);
@@ -457,15 +561,20 @@ router.get("/addClosingVote", async function (req, res) {
   }
 });
 
-router.get("/closeVotingPeriod", async function (req, res) {
+router.post("/closeVotingPeriod", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .closeVotingPeriod()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Closed sub objective voting period!");
       });
   } catch (error) {
     console.log(error);
@@ -473,15 +582,20 @@ router.get("/closeVotingPeriod", async function (req, res) {
   }
 });
 
-router.get("/executeNextSubObjective", async function (req, res) {
+router.post("/executeNextSubObjective", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .executeNextSubObjective()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Tried to execute next subObjective");
       });
   } catch (error) {
     console.log(error);
@@ -489,15 +603,20 @@ router.get("/executeNextSubObjective", async function (req, res) {
   }
 });
 
-router.get("/voteToCloseContract", async function (req, res) {
+router.post("/voteToCloseContract", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .voteToCloseContract()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Vote to close contract!");
       });
   } catch (error) {
     console.log(error);
@@ -505,15 +624,20 @@ router.get("/voteToCloseContract", async function (req, res) {
   }
 });
 
-router.get("/closeContract", async function (req, res) {
+router.post("/closeContract", async function (req, res) {
   try {
     const contract = contractService.getContract(contractName);
+    const sender = req.body.sender;
 
     let result = await contract.methods
       .closeContract()
-      .call()
+      .send({
+        gas: "6721975",
+        from: sender,
+        value: 0, // web3.utils.toWei('10', 'ether')
+      })
       .then(function (result) {
-        res.status(200).send("Voted for auditor!");
+        res.status(200).send("Tried to close contract!");
       });
   } catch (error) {
     console.log(error);
