@@ -180,7 +180,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
             uint proportionalReturnsPercentage = config.actualSavings / contribution;
             uint winnings = proportionalReturnsPercentage * config.actualSavings;
             if(winnings > debt){
-                uint toReturn = winnings - debt;
+                uint toReturn = winnings / 100 * (100 + config.bonusPercentage) - debt;
                 ahorrista.ahorristaAddress.transfer(toReturn);
             }
         }
@@ -192,7 +192,7 @@ contract SubObjectiveContract is ContratoGestorVoting {
             uint proportionalReturnsPercentage = config.actualSavings / contribution;
             uint winnings = proportionalReturnsPercentage * config.actualSavings;
             if(winnings > debt){
-                uint toReturn = winnings - debt;
+                uint toReturn = winnings / 100 * (100 + config.bonusPercentage) - debt;
                 ahorrista.ahorristaAddress.transfer(toReturn);
             }
         }
