@@ -176,7 +176,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         } else {
             mappings.deathReports[saver] = DeathReport({
                 saver: saver,
-                gestorApprovals: 0,
+                gestorApprovals: 1,
                 exist: true,
                 dateApproved: now
             });
@@ -188,7 +188,7 @@ contract ContratoAhorristaConfig is ContratoConfiguracion {
         mappings.deathReports[msg.sender].exist = false;
     }
 
-    function closeDeadSaverAccount(address payable _saver) public  onlyGestor saverWasReportedAndOutOfTime  {
+    function closeDeadSaverAccount(address payable _saver) public  onlyAudit saverWasReportedAndOutOfTime  {
         //TODO: Chequear si el retirado es admin / gestor / auditor -> abrir inscripciones y disparar votación de alguna forma.
         uint amountToReturn = mappings.ahorristaStructs[_saver].payed / 100 * config.percentageForRetirements -  mappings.ahorristaStructs[_saver].debt;
         if(config.actualSavings >= amountToReturn &&  amountToReturn > 0){
